@@ -1,0 +1,22 @@
+﻿  main.cpp
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\vertices_data.h(4,15): error C2466: cannot allocate an array of constant size 0
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\vertices_data.h(9,15): error C2466: cannot allocate an array of constant size 0
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\vertices_data.h(15,15): error C2466: cannot allocate an array of constant size 0
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\vertices_data.h(21,15): error C2466: cannot allocate an array of constant size 0
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\vertices_data.h(29,15): error C2466: cannot allocate an array of constant size 0
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\vertices_data.h(36,15): error C2466: cannot allocate an array of constant size 0
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\main.cpp(66,21): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\main.cpp(67,22): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\main.cpp(72,13): error C2466: cannot allocate an array of constant size 0
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\main.cpp(119,9): warning C4060: switch statement contains no 'case' or 'default' labels
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\main.cpp(133,9): warning C4060: switch statement contains no 'case' or 'default' labels
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\main.cpp(194,21): warning C4244: 'initializing': conversion from 'GLfloat' to 'unsigned char', possible loss of data
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\main.cpp(195,21): warning C4244: 'initializing': conversion from 'GLfloat' to 'unsigned char', possible loss of data
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\main.cpp(196,21): warning C4244: 'initializing': conversion from 'GLfloat' to 'unsigned char', possible loss of data
+  shader_program.cpp
+  shapes.cpp
+  window.cpp
+  Generating Code...
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\shapes.cpp(65): error C4716: 'BasicShapeMultipleArrays::mapPosData': must return a value
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\shader_program.cpp(20): error C4716: 'Shader::id': must return a value
+C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\Tps\TP1\tp1_H24\src\shader_program.cpp(67): error C4716: 'ShaderProgram::getUniformLoc': must return a value

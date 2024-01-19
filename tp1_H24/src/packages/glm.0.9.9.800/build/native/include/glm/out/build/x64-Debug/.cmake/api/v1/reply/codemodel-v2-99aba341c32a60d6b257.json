@@ -1,0 +1,38 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"projectIndex" : 0,
+					"source" : "."
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Project"
+				}
+			],
+			"targets" : []
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/thoms/OneDrive - polymtl.ca/Université/2024 Hiver/INF2705-Infographie/Tps/TP1/tp1_H24/src/packages/glm.0.9.9.800/build/native/include/glm/out/build/x64-Debug",
+		"source" : "C:/Users/thoms/OneDrive - polymtl.ca/Université/2024 Hiver/INF2705-Infographie/Tps/TP1/tp1_H24/src/packages/glm.0.9.9.800/build/native/include/glm"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}
