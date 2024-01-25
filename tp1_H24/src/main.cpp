@@ -44,14 +44,32 @@ int main(int argc, char* argv[])
     { // Les accolades vont permettre de détruire le code des shaders plus rapidement
         // Vous devez lire le code des shaders dans "shaders/"
         // avec la fonction "readFile".
-        
+        std::string basicVertexShaderSource = readFile("shaders/basic.vs.glsl");
+        std::string basicFragmentShaderSource = readFile("shaders/basic.fs.glsl");
         // Vous pouvez par la suite instancier vos shaders, les attacher et les lier
         // au programme.
+        ShaderProgram basicShaderProgram;
+        auto src = basicVertexShaderSource.c_str();
+        Shader vertexShader(GL_VERTEX_SHADER, src);
+        basicShaderProgram.attachShader(vertexShader);
+        src = basicFragmentShaderSource.c_str();
+        Shader fragmentShader(GL_FRAGMENT_SHADER, src);
+        basicShaderProgram.attachShader(fragmentShader);
+        basicShaderProgram.link();
     }
     
     // ... color;
     {
-        // ...
+        std::string colorVertexShaderSource = readFile("shaders/color.vs.glsl");
+        std::string colorFragmentShaderSource = readFile("shaders/color.fs.glsl");
+        ShaderProgram colorShaderProgram;
+        auto src = colorVertexShaderSource.c_str();
+        Shader vertexShader(GL_VERTEX_SHADER, src);
+        colorShaderProgram.attachShader(vertexShader);
+        src = colorFragmentShaderSource.c_str();
+        Shader fragmentShader(GL_FRAGMENT_SHADER, src);
+        colorShaderProgram.attachShader(fragmentShader);
+        colorShaderProgram.link();
     }
     
     // TODO Partie 2: Shader program de transformation.
