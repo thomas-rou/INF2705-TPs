@@ -30,8 +30,6 @@ void BasicShapeArrays::draw(GLenum mode, GLsizei count)
     glBindVertexArray(0);
 }
 
-
-
 BasicShapeMultipleArrays::BasicShapeMultipleArrays(const GLfloat* pos, GLsizeiptr posByteSize, const GLfloat* color, GLsizeiptr colorByteSize)
 {
     glGenVertexArrays(1, &m_vao);
