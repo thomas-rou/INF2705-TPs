@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
     printGLInfo();
     
     // TODO Partie 1: Instancier les shader programs ici.
-    // ... basic;
+    ShaderProgram basicShaderProgram;
     { // Les accolades vont permettre de détruire le code des shaders plus rapidement
         // Vous devez lire le code des shaders dans "shaders/"
         // avec la fonction "readFile".
@@ -48,7 +48,6 @@ int main(int argc, char* argv[])
         std::string basicFragmentShaderSource = readFile("shaders/basic.fs.glsl");
         // Vous pouvez par la suite instancier vos shaders, les attacher et les lier
         // au programme.
-        ShaderProgram basicShaderProgram;
         auto src = basicVertexShaderSource.c_str();
         Shader vertexShader(GL_VERTEX_SHADER, src);
         basicShaderProgram.attachShader(vertexShader);
@@ -58,11 +57,10 @@ int main(int argc, char* argv[])
         basicShaderProgram.link();
     }
     
-    // ... color;
+    ShaderProgram colorShaderProgram;
     {
         std::string colorVertexShaderSource = readFile("shaders/color.vs.glsl");
         std::string colorFragmentShaderSource = readFile("shaders/color.fs.glsl");
-        ShaderProgram colorShaderProgram;
         auto src = colorVertexShaderSource.c_str();
         Shader vertexShader(GL_VERTEX_SHADER, src);
         colorShaderProgram.attachShader(vertexShader);
@@ -85,21 +83,33 @@ int main(int argc, char* argv[])
     float dy = 0.0128;
     
     float angleDeg = 0.0f;
+
+    GLfloat brightRed[] = {1.0f, 0.2f, 0.2f, 1.0f};
+    GLfloat brightGreen[] = {0.2f, 1.0f, 0.2f, 1.0f};
+    GLfloat brightBlue[] = {0.2f, 0.2f, 1.0f, 1.0f};
+    GLfloat brightYellow[] = {1.0f, 1.0f, 0.2f, 1.0f};
+    
     
     // Tableau non constant de la couleur
     GLfloat onlyColorTriVertices[] = {
         // TODO Partie 1: Rempliser adéquatement le tableau.
         // Vous pouvez expérimenter avec une couleur uniforme
         // de votre choix ou plusieurs différentes en chaque points.
+        brightRed[0], brightRed[1], brightRed[2], brightRed[3],
+        brightGreen[0], brightGreen[1], brightGreen[2], brightGreen[3],
+        brightBlue[0], brightBlue[1], brightBlue[2], brightBlue[3],
     };
     
     // TODO Partie 1: Instancier vos formes ici.
-    // ...
+    BasicShapeArrays onlyColorTri(triVertices, sizeof(triVertices));
+    onlyColorTri.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
+
     
     // TODO Partie 2: Instancier le cube ici.
     // ...
     
     // TODO Partie 1: Donner une couleur de remplissage aux fonds.
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     
     // TODO Partie 2: Activer le depth test.
     
@@ -112,6 +122,8 @@ int main(int argc, char* argv[])
             glViewport(0, 0, w.getWidth(), w.getHeight());
         
         // TODO Partie 1: Nettoyer les tampons appropriées.
+        glClear(GL_COLOR_BUFFER_BIT);
+
         
         if (w.getKey(Window::Key::T))
         {
@@ -133,7 +145,7 @@ int main(int argc, char* argv[])
         // N'hésiter pas à utiliser le fallthrough du switch case.
         switch (selectShape)
         {
-            // ...
+            basicShaderProgram.use();
         }
         
         // TODO Partie 2: Calcul des matrices et envoyer une matrice résultante mvp au shader.
@@ -147,7 +159,7 @@ int main(int argc, char* argv[])
         // TODO Partie 1: Dessiner la forme sélectionnée.
         switch (selectShape)
         {
-            // ...
+            onlyColorTri.draw(GL_TRIANGLES, 3);
         }
         
         w.swap();
