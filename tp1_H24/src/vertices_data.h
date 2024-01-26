@@ -4,39 +4,42 @@
 const GLfloat triVertices[] = {
     // TODO Partie 1: Définir les coordonnées d'un triangle
     // en considérant le type de l'entrée du vertex shader.
+    0.0f, 0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
+    -0.5f, 0.5f, 0.0f
 };
 
-const GLfloat squareVertices[] = {
-    // TODO Partie 1: Définir les coordonnées d'un carré
-    // fait de deux triangles en considérant le type de 
-	// l'entrée du vertex shader.
-};
+// const GLfloat squareVertices[] = {
+//     // TODO Partie 1: Définir les coordonnées d'un carré
+//     // fait de deux triangles en considérant le type de 
+// 	// l'entrée du vertex shader.
+// };
 
-const GLfloat colorTriVertices[] = {
-    // TODO Partie 1: Définir les coordonnées d'un triangle
-    // avec les attributs de position et couleur entrelacés
-    // en considérant le type des entrées du vertex shader.
-};
+// const GLfloat colorTriVertices[] = {
+//     // TODO Partie 1: Définir les coordonnées d'un triangle
+//     // avec les attributs de position et couleur entrelacés
+//     // en considérant le type des entrées du vertex shader.
+// };
 
-const GLfloat colorSquareVertices[] = {
-    // TODO Partie 1: Définir les coordonnées d'un carré
-    // fait de deux triangles avec les attributs de 
-    // position et couleur entrelacés en considérant le type 
-    // des entrées du vertex shader.
-};
+// const GLfloat colorSquareVertices[] = {
+//     // TODO Partie 1: Définir les coordonnées d'un carré
+//     // fait de deux triangles avec les attributs de 
+//     // position et couleur entrelacés en considérant le type 
+//     // des entrées du vertex shader.
+// };
 
 
-const GLfloat colorSquareVerticesReduced[] = {
-    // TODO Partie 1: Définir les coordonnées d'un carré
-    // fait de deux triangles avec les attributs de 
-    // position et couleur entrelacés en considérant le type 
-    // des entrées du vertex shader. Il devrait y avoir
-    // moins de données dans ce tableau.
-};
-const GLubyte indexes[] = {
-    // TODO Partie 1: Définir les indexes pour générer un
-    // carré en réutilisant certaines vertices.
-};
+// const GLfloat colorSquareVerticesReduced[] = {
+//     // TODO Partie 1: Définir les coordonnées d'un carré
+//     // fait de deux triangles avec les attributs de 
+//     // position et couleur entrelacés en considérant le type 
+//     // des entrées du vertex shader. Il devrait y avoir
+//     // moins de données dans ce tableau.
+// };
+// const GLubyte indexes[] = {
+//     // TODO Partie 1: Définir les indexes pour générer un
+//     // carré en réutilisant certaines vertices.
+// };
 
 
 // Partie 2: On vous donne les vertices et indexes du cube.
