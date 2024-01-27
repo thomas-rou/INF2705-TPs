@@ -110,9 +110,8 @@ int main(int argc, char* argv[])
     BasicShapeArrays onlyColorTri(triVertices, sizeof(triVertices));
     onlyColorTri.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
-    BasicShapeArrays onlyColorSquare(squareVertices, sizeof(squareVertices));
+    BasicShapeElements onlyColorSquare(squareVertices, sizeof(squareVertices), indexes, sizeof(indexes));
     onlyColorSquare.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
-
 
     // TODO Partie 2: Instancier le cube ici.
     // ...
@@ -193,7 +192,7 @@ int main(int argc, char* argv[])
                 onlyColorTri.draw(GL_TRIANGLES, 3);
                 break;
             case 1:
-                onlyColorSquare.draw(GL_TRIANGLE_STRIP, 4);
+                onlyColorSquare.draw(GL_TRIANGLES, 6);
                 break;
         }
 
