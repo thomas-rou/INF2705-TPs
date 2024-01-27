@@ -117,12 +117,9 @@ int main(int argc, char* argv[])
     coloredtri.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
     coloredtri.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
-    BasicShapeArrays coloredSquareTri1(colorSquareVertices, sizeof(colorSquareVertices));
-    coloredSquareTri1.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
-    coloredSquareTri1.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
-    BasicShapeArrays coloredSquareTri2(colorSquareVertices, sizeof(colorSquareVertices));
-    coloredSquareTri2.enableAttribute(0, 3, 6*sizeof(GLfloat), 6*sizeof(GLfloat));
-    coloredSquareTri2.enableAttribute(1, 3, 6*sizeof(GLfloat), 9*sizeof(GLfloat));
+    BasicShapeArrays coloredSquare(colorSquareVertices, sizeof(colorSquareVertices));
+    coloredSquare.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
+    coloredSquare.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
 
     // TODO Partie 2: Instancier le cube ici.
@@ -221,8 +218,7 @@ int main(int argc, char* argv[])
                 coloredtri.draw(GL_TRIANGLES, 3);
                 break;
             case 3:
-                coloredSquareTri1.draw(GL_TRIANGLES, 3);
-                coloredSquareTri2.draw(GL_TRIANGLES, 3);
+                coloredSquare.draw(GL_TRIANGLES, 6);
                 break;
         }
 
