@@ -13,9 +13,10 @@ const GLfloat squareVertices[] = {
     // TODO Partie 1: Définir les coordonnées d'un carré
     // fait de deux triangles en considérant le type de
 	// l'entrée du vertex shader.
-    0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // top vertex, red color
-   -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left vertex, green color
-    0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f  // bottom right vertex, blue color
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f,
+     0.5f,  0.5f, 0.0f
 };
 
 // const GLfloat colorTriVertices[] = {

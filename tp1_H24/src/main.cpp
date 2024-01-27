@@ -39,6 +39,12 @@ int main(int argc, char* argv[])
 
     printGLInfo();
 
+    // SDL_GL_SetSwapInterval(1);
+    // GLint maxSamples; // Declare maxSamples variable
+    // glGetIntegerv(GL_MAX_SAMPLES, &maxSamples); // Call glGetIntegerv function
+    // std::cout << "Max samples: " << maxSamples << std::endl;
+
+
     // TODO Partie 1: Instancier les shader programs ici.
     ShaderProgram basicShaderProgram;
     { // Les accolades vont permettre de détruire le code des shaders plus rapidement
@@ -104,6 +110,9 @@ int main(int argc, char* argv[])
     BasicShapeArrays onlyColorTri(triVertices, sizeof(triVertices));
     onlyColorTri.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
+    BasicShapeArrays onlyColorSquare(squareVertices, sizeof(squareVertices));
+    onlyColorSquare.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
+
 
     // TODO Partie 2: Instancier le cube ici.
     // ...
@@ -146,15 +155,27 @@ int main(int argc, char* argv[])
         switch (selectShape)
         {
             case 0:
+            {
                 basicShaderProgram.use();
-                GLint globalColorLocation = basicShaderProgram.getUniformLoc("globalColor");
-                if (globalColorLocation == -1) {
+                GLint triGlobalColorLocation = basicShaderProgram.getUniformLoc("globalColor");
+                if (triGlobalColorLocation == -1) {
                     std::cerr << "Could not find uniform variable 'globalColor'\n";
                 } else {
-                // Set the value of the uniform variable
-                glUniform4f(globalColorLocation, brightRed[0], brightRed[1], brightRed[2], brightRed[3]);
+                glUniform4f(triGlobalColorLocation, brightRed[0], brightRed[1], brightRed[2], brightRed[3]);
                 }
                 break;
+            }
+            case 1:
+            {
+                basicShaderProgram.use();
+                GLint squareGlobalColorLocation = basicShaderProgram.getUniformLoc("globalColor");
+                if (squareGlobalColorLocation == -1) {
+                    std::cerr << "Could not find uniform variable 'globalColor'\n";
+                } else {
+                glUniform4f(squareGlobalColorLocation, brightBlue[0], brightBlue[1], brightBlue[2], brightBlue[3]);
+                }
+                break;
+            }
         }
 
         // TODO Partie 2: Calcul des matrices et envoyer une matrice résultante mvp au shader.
@@ -170,6 +191,9 @@ int main(int argc, char* argv[])
         {
             case 0:
                 onlyColorTri.draw(GL_TRIANGLES, 3);
+                break;
+            case 1:
+                onlyColorSquare.draw(GL_TRIANGLE_STRIP, 4);
                 break;
         }
 
