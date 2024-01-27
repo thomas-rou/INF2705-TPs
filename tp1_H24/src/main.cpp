@@ -110,8 +110,10 @@ int main(int argc, char* argv[])
     BasicShapeArrays onlyColorTri(triVertices, sizeof(triVertices));
     onlyColorTri.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
-    BasicShapeElements onlyColorSquare(squareVertices, sizeof(squareVertices), indexes, sizeof(indexes));
-    onlyColorSquare.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
+    BasicShapeArrays onlyColorSquareTri1(squareVertices, sizeof(squareVertices));
+    onlyColorSquareTri1.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
+    BasicShapeArrays onlyColorSquareTri2(squareVertices, sizeof(squareVertices));
+    onlyColorSquareTri2.enableAttribute(0, 3, 3*sizeof(GLfloat), 3*sizeof(GLfloat));
 
     BasicShapeArrays coloredtri(colorTriVertices, sizeof(colorTriVertices));
     coloredtri.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
@@ -203,7 +205,8 @@ int main(int argc, char* argv[])
                 onlyColorTri.draw(GL_TRIANGLES, 3);
                 break;
             case 1:
-                onlyColorSquare.draw(GL_TRIANGLES, 6);
+                onlyColorSquareTri1.draw(GL_TRIANGLES, 3);
+                onlyColorSquareTri2.draw(GL_TRIANGLES, 3);
                 break;
             case 2:
                 coloredtri.draw(GL_TRIANGLES, 3);
