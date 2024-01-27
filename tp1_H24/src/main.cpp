@@ -113,11 +113,17 @@ int main(int argc, char* argv[])
     BasicShapeElements onlyColorSquare(squareVertices, sizeof(squareVertices), indexes, sizeof(indexes));
     onlyColorSquare.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
+    BasicShapeArrays coloredtri(colorTriVertices, sizeof(colorTriVertices));
+    coloredtri.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
+    coloredtri.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
+
+
     // TODO Partie 2: Instancier le cube ici.
     // ...
 
     // TODO Partie 1: Donner une couleur de remplissage aux fonds.
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearDepth(1.0f);
 
     // TODO Partie 2: Activer le depth test.
 
@@ -130,7 +136,7 @@ int main(int argc, char* argv[])
             glViewport(0, 0, w.getWidth(), w.getHeight());
 
         // TODO Partie 1: Nettoyer les tampons appropriées.
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
         if (w.getKey(Window::Key::T))
@@ -175,6 +181,11 @@ int main(int argc, char* argv[])
                 }
                 break;
             }
+            case 2:
+            {
+                colorShaderProgram.use();
+                break;
+            }
         }
 
         // TODO Partie 2: Calcul des matrices et envoyer une matrice résultante mvp au shader.
@@ -193,6 +204,9 @@ int main(int argc, char* argv[])
                 break;
             case 1:
                 onlyColorSquare.draw(GL_TRIANGLES, 6);
+                break;
+            case 2:
+                coloredtri.draw(GL_TRIANGLES, 3);
                 break;
         }
 
