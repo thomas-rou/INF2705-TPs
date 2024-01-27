@@ -29,16 +29,16 @@ int main(int argc, char* argv[])
     Window w;
     if (!w.init())
         return -1;
-    
+
     GLenum rev = glewInit();
     if ( rev != GLEW_OK )
     {
         std::cout << "Could not initialize glew! GLEW_Error: " << glewGetErrorString(rev) << std::endl;
         return -2;
     }
-    
+
     printGLInfo();
-    
+
     // TODO Partie 1: Instancier les shader programs ici.
     ShaderProgram basicShaderProgram;
     { // Les accolades vont permettre de détruire le code des shaders plus rapidement
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
         basicShaderProgram.attachShader(fragmentShader);
         basicShaderProgram.link();
     }
-    
+
     ShaderProgram colorShaderProgram;
     {
         std::string colorVertexShaderSource = readFile("shaders/color.vs.glsl");
@@ -69,27 +69,27 @@ int main(int argc, char* argv[])
         colorShaderProgram.attachShader(fragmentShader);
         colorShaderProgram.link();
     }
-    
+
     // TODO Partie 2: Shader program de transformation.
     // ... transform;
     // ... location;
     {
         // ...
     }
-    
+
     // Variables pour la mise à jour, ne pas modifier.
     float cx = 0, cy = 0;
     float dx = 0.019;
     float dy = 0.0128;
-    
+
     float angleDeg = 0.0f;
 
     GLfloat brightRed[] = {1.0f, 0.2f, 0.2f, 1.0f};
     GLfloat brightGreen[] = {0.2f, 1.0f, 0.2f, 1.0f};
     GLfloat brightBlue[] = {0.2f, 0.2f, 1.0f, 1.0f};
     GLfloat brightYellow[] = {1.0f, 1.0f, 0.2f, 1.0f};
-    
-    
+
+
     // Tableau non constant de la couleur
     GLfloat onlyColorTriVertices[] = {
         // TODO Partie 1: Rempliser adéquatement le tableau.
@@ -99,55 +99,64 @@ int main(int argc, char* argv[])
         brightGreen[0], brightGreen[1], brightGreen[2], brightGreen[3],
         brightBlue[0], brightBlue[1], brightBlue[2], brightBlue[3],
     };
-    
+
     // TODO Partie 1: Instancier vos formes ici.
     BasicShapeArrays onlyColorTri(triVertices, sizeof(triVertices));
     onlyColorTri.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
-    
+
     // TODO Partie 2: Instancier le cube ici.
     // ...
-    
+
     // TODO Partie 1: Donner une couleur de remplissage aux fonds.
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-    
+
     // TODO Partie 2: Activer le depth test.
-    
-    
+
+
     int selectShape = 0;
     bool isRunning = true;
     while (isRunning)
     {
         if (w.shouldResize())
             glViewport(0, 0, w.getWidth(), w.getHeight());
-        
+
         // TODO Partie 1: Nettoyer les tampons appropriées.
         glClear(GL_COLOR_BUFFER_BIT);
 
-        
+
         if (w.getKey(Window::Key::T))
         {
             selectShape = ++selectShape < 7 ? selectShape : 0;
             std::cout << "Selected shape: " << selectShape << std::endl;
         }
-        
+
         // TODO Partie 1: Mise à jour des données du triangle
         /*
         changeRGB(&onlyColorTriVertices[0]);
         changeRGB(&onlyColorTriVertices[3]);
         changeRGB(&onlyColorTriVertices[6]);
-        
+
         changePos(posPtr, cx, cy, dx, dy);
         //*/
-        
-        
+
+
         // TODO Partie 1: Utiliser le bon shader programme selon la forme.
         // N'hésiter pas à utiliser le fallthrough du switch case.
         switch (selectShape)
         {
-            basicShaderProgram.use();
+            case 0:
+                basicShaderProgram.use();
+                GLint globalColorLocation = basicShaderProgram.getUniformLoc("globalColor");
+                if (globalColorLocation == -1) {
+                    std::cerr << "Could not find uniform variable 'globalColor'\n";
+                } else {
+                // Set the value of the uniform variable
+                glUniform4f(globalColorLocation, brightRed[0], brightRed[1], brightRed[2], brightRed[3]);
+                }
+                break;
         }
-        
+
         // TODO Partie 2: Calcul des matrices et envoyer une matrice résultante mvp au shader.
         if (selectShape == 6)
         {
@@ -155,13 +164,15 @@ int main(int argc, char* argv[])
             // Utiliser glm pour les calculs de matrices.
             // glm::mat4 matrix;
         }
-        
+
         // TODO Partie 1: Dessiner la forme sélectionnée.
         switch (selectShape)
         {
-            onlyColorTri.draw(GL_TRIANGLES, 3);
+            case 0:
+                onlyColorTri.draw(GL_TRIANGLES, 3);
+                break;
         }
-        
+
         w.swap();
         w.pollEvent();
         isRunning = !w.shouldClose() && !w.getKey(Window::Key::ESC);
@@ -206,7 +217,7 @@ void checkGLError(const char* file, int line)
             break;
         }
         std::cerr << std::endl;
-    }    
+    }
 }
 
 void printGLInfo()
@@ -224,7 +235,7 @@ void changeRGB(GLfloat* color)
     unsigned char r = color[0]*255;
     unsigned char g = color[1]*255;
     unsigned char b = color[2]*255;
-    
+
     if(r > 0 && b == 0)
     {
         r--;
