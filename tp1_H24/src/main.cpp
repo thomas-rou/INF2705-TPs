@@ -125,6 +125,10 @@ int main(int argc, char* argv[])
     multColoredTri.enablePosAttribute(0, 3, 6*sizeof(GLfloat), 0);
     multColoredTri.enableColorAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
+    BasicShapeElements elementsSquare(colorSquareVerticesReduced, sizeof(colorSquareVerticesReduced), indexes, sizeof(indexes));
+    elementsSquare.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
+    elementsSquare.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
+
     // TODO Partie 2: Instancier le cube ici.
     // ...
 
@@ -186,6 +190,7 @@ int main(int argc, char* argv[])
             case 2:
             case 3:
             case 4:
+            case 5:
             {
                 colorShaderProgram.use();
                 break;
@@ -217,6 +222,9 @@ int main(int argc, char* argv[])
                 break;
             case 4:
                 multColoredTri.draw(GL_TRIANGLES, 3);
+                break;
+            case 5:
+                elementsSquare.draw(GL_TRIANGLES, 6);
                 break;
         }
 
