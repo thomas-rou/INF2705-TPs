@@ -4,14 +4,14 @@
 const GLfloat triVertices[] = {
     // TODO Partie 1: Définir les coordonnées d'un triangle
     // en considérant le type de l'entrée du vertex shader.
-    0.0f, 0.5f, 0.0f,
     -0.5f, -0.5f, 0.0f,
-    -0.5f, 0.5f, 0.0f
+    0.5f, -0.5f, 0.0f,
+    0.0f, 0.5f, 0.0f,
 };
 
 const GLfloat squareVertices[] = {
     // TODO Partie 1: Définir les coordonnées d'un carré
-    // fait de deux triangles en considérant le type de 
+    // fait de deux triangles en considérant le type de
 	// l'entrée du vertex shader.
     0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // top vertex, red color
    -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left vertex, green color
@@ -26,8 +26,8 @@ const GLfloat squareVertices[] = {
 
 const GLfloat colorSquareVertices[] = {
     // TODO Partie 1: Définir les coordonnées d'un carré
-    // fait de deux triangles avec les attributs de 
-    // position et couleur entrelacés en considérant le type 
+    // fait de deux triangles avec les attributs de
+    // position et couleur entrelacés en considérant le type
     // des entrées du vertex shader.
     -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left corner, red color
      0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right corner, green color
@@ -38,14 +38,14 @@ const GLfloat colorSquareVertices[] = {
 
 const GLfloat colorSquareVerticesReduced[] = {
     // TODO Partie 1: Définir les coordonnées d'un carré
-    // fait de deux triangles avec les attributs de 
-    // position et couleur entrelacés en considérant le type 
+    // fait de deux triangles avec les attributs de
+    // position et couleur entrelacés en considérant le type
     // des entrées du vertex shader. Il devrait y avoir
     // moins de données dans ce tableau.
     -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left corner, red color
      0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right corner, green color
      0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f  // top right corner, white color
-    
+
 };
 const GLubyte indexes[] = {
     // TODO Partie 1: Définir les indexes pour générer un
@@ -93,19 +93,19 @@ const GLfloat cubeVertices[] = {
 const GLubyte cubeIndexes[] = {
      0,  1,  2,
      1,  3,  2,
-    
+
      4,  5,  6,
      5,  7,  6,
-    
+
      8,  9, 10,
      9, 11, 10,
-    
+
     12, 13, 14,
     13, 15, 14,
-    
+
     16, 17, 18,
     17, 19, 18,
-    
+
     20, 21, 22,
     21, 23, 22,
 };

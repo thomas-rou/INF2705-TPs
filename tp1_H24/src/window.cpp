@@ -10,16 +10,16 @@ Window::Window()
 , m_shouldResize(false)
 , m_width(0), m_height(0)
 {
-    
+
 }
-    
+
 Window::~Window()
 {
     SDL_GL_DeleteContext(m_context);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
 }
-    
+
 bool Window::init()
 {
     const Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_EVENTS;
@@ -29,7 +29,7 @@ bool Window::init()
         SDL_ClearError();
         return false;
     }
-    
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 
@@ -41,7 +41,7 @@ bool Window::init()
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
-    
+
     m_window = SDL_CreateWindow("INF2705 - Tp", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 800, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if (!m_window)
     {
@@ -49,7 +49,7 @@ bool Window::init()
         SDL_ClearError();
         return false;
     }
-    
+
     m_context = SDL_GL_CreateContext(m_window);
     if (!m_context)
     {
@@ -58,8 +58,6 @@ bool Window::init()
         return false;
     }
 
-    SDL_GL_SetSwapInterval(1);
-    
     return true;
 }
 
@@ -70,19 +68,19 @@ void Window::swap()
 
 void Window::pollEvent()
 {
-    SDL_Event e;        
+    SDL_Event e;
     while (SDL_PollEvent(&e))
     {
         switch (e.type)
         {
-        case SDL_QUIT: 
+        case SDL_QUIT:
             m_shouldClose = true;
             break;
         case SDL_WINDOWEVENT:
             if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
             {
                 m_width  = e.window.data1;
-                m_height = e.window.data2;                    
+                m_height = e.window.data2;
                 m_shouldResize = true;
             }
             else if (e.window.event == SDL_WINDOWEVENT_SHOWN)
@@ -115,7 +113,7 @@ unsigned int Window::getTick()
     return SDL_GetTicks();
 }
 
-bool Window::shouldClose()  { return m_shouldClose; }    
+bool Window::shouldClose()  { return m_shouldClose; }
 bool Window::shouldResize() { return m_shouldResize; }
 
 int Window::getWidth()  { return m_width;  }
