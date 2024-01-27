@@ -14,9 +14,11 @@ const GLfloat squareVertices[] = {
     // fait de deux triangles en considérant le type de
 	// l'entrée du vertex shader.
     -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
     -0.5f,  0.5f, 0.0f,
-     0.5f,  0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f,
+    0.5f,  0.5f, 0.0f,
 };
 
 const GLfloat colorTriVertices[] = {
@@ -33,10 +35,10 @@ const GLfloat colorSquareVertices[] = {
     // fait de deux triangles avec les attributs de
     // position et couleur entrelacés en considérant le type
     // des entrées du vertex shader.
-    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left corner, red color
-     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right corner, green color
-    -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // top left corner, blue color
-     0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f  // top right corner, white color
+    -0.5f, -0.5f, 0.0f, 1.0f, 0.2f, 0.2f,
+    0.5f, -0.5f, 0.0f, 0.2f, 1.0f, 0.2f,
+    -0.5f,  0.5f, 0.0f, 0.2f, 0.2f, 1.0f,
+    0.5f,  0.5f, 0.0f, 1.0f, 0.2f, 0.2f,
 };
 
 

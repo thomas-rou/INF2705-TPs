@@ -110,14 +110,19 @@ int main(int argc, char* argv[])
     BasicShapeArrays onlyColorTri(triVertices, sizeof(triVertices));
     onlyColorTri.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
-    BasicShapeArrays onlyColorSquareTri1(squareVertices, sizeof(squareVertices));
-    onlyColorSquareTri1.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
-    BasicShapeArrays onlyColorSquareTri2(squareVertices, sizeof(squareVertices));
-    onlyColorSquareTri2.enableAttribute(0, 3, 3*sizeof(GLfloat), 3*sizeof(GLfloat));
+    BasicShapeArrays onlyColorSquare(squareVertices, sizeof(squareVertices));
+    onlyColorSquare.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
     BasicShapeArrays coloredtri(colorTriVertices, sizeof(colorTriVertices));
     coloredtri.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
     coloredtri.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
+
+    BasicShapeArrays coloredSquareTri1(colorSquareVertices, sizeof(colorSquareVertices));
+    coloredSquareTri1.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
+    coloredSquareTri1.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
+    BasicShapeArrays coloredSquareTri2(colorSquareVertices, sizeof(colorSquareVertices));
+    coloredSquareTri2.enableAttribute(0, 3, 6*sizeof(GLfloat), 6*sizeof(GLfloat));
+    coloredSquareTri2.enableAttribute(1, 3, 6*sizeof(GLfloat), 9*sizeof(GLfloat));
 
 
     // TODO Partie 2: Instancier le cube ici.
@@ -188,6 +193,11 @@ int main(int argc, char* argv[])
                 colorShaderProgram.use();
                 break;
             }
+            case 3:
+            {
+                colorShaderProgram.use();
+                break;
+            }
         }
 
         // TODO Partie 2: Calcul des matrices et envoyer une matrice résultante mvp au shader.
@@ -205,11 +215,14 @@ int main(int argc, char* argv[])
                 onlyColorTri.draw(GL_TRIANGLES, 3);
                 break;
             case 1:
-                onlyColorSquareTri1.draw(GL_TRIANGLES, 3);
-                onlyColorSquareTri2.draw(GL_TRIANGLES, 3);
+                onlyColorSquare.draw(GL_TRIANGLES, 6);
                 break;
             case 2:
                 coloredtri.draw(GL_TRIANGLES, 3);
+                break;
+            case 3:
+                coloredSquareTri1.draw(GL_TRIANGLES, 3);
+                coloredSquareTri2.draw(GL_TRIANGLES, 3);
                 break;
         }
 
