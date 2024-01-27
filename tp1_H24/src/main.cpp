@@ -121,6 +121,9 @@ int main(int argc, char* argv[])
     coloredSquare.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
     coloredSquare.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
+    BasicShapeMultipleArrays multColoredTri(colorTriVertices, sizeof(colorTriVertices), colorTriVertices, sizeof(colorTriVertices));
+    multColoredTri.enablePosAttribute(0, 3, 6*sizeof(GLfloat), 0);
+    multColoredTri.enableColorAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
     // TODO Partie 2: Instancier le cube ici.
     // ...
@@ -150,47 +153,39 @@ int main(int argc, char* argv[])
         }
 
         // TODO Partie 1: Mise à jour des données du triangle
-        /*
         changeRGB(&onlyColorTriVertices[0]);
         changeRGB(&onlyColorTriVertices[3]);
         changeRGB(&onlyColorTriVertices[6]);
+        multColoredTri.updateColorData(onlyColorTriVertices, sizeof(onlyColorTriVertices));
 
+        GLfloat* posPtr = multColoredTri.mapPosData();
+        multColoredTri.unmapPosData();
+        if (posPtr == nullptr)
+        {
+            std::cerr << "Could not map position data!\n";
+            return -1;
+        }
         changePos(posPtr, cx, cy, dx, dy);
-        //*/
-
 
         // TODO Partie 1: Utiliser le bon shader programme selon la forme.
         // N'hésiter pas à utiliser le fallthrough du switch case.
         switch (selectShape)
         {
             case 0:
-            {
-                basicShaderProgram.use();
-                GLint triGlobalColorLocation = basicShaderProgram.getUniformLoc("globalColor");
-                if (triGlobalColorLocation == -1) {
-                    std::cerr << "Could not find uniform variable 'globalColor'\n";
-                } else {
-                glUniform4f(triGlobalColorLocation, brightRed[0], brightRed[1], brightRed[2], brightRed[3]);
-                }
-                break;
-            }
             case 1:
             {
                 basicShaderProgram.use();
-                GLint squareGlobalColorLocation = basicShaderProgram.getUniformLoc("globalColor");
-                if (squareGlobalColorLocation == -1) {
+                GLint globalColorLocation = basicShaderProgram.getUniformLoc("globalColor");
+                if (globalColorLocation == -1) {
                     std::cerr << "Could not find uniform variable 'globalColor'\n";
                 } else {
-                glUniform4f(squareGlobalColorLocation, brightBlue[0], brightBlue[1], brightBlue[2], brightBlue[3]);
+                glUniform4f(globalColorLocation, brightBlue[0], brightBlue[1], brightBlue[2], brightBlue[3]);
                 }
                 break;
             }
             case 2:
-            {
-                colorShaderProgram.use();
-                break;
-            }
             case 3:
+            case 4:
             {
                 colorShaderProgram.use();
                 break;
@@ -219,6 +214,9 @@ int main(int argc, char* argv[])
                 break;
             case 3:
                 coloredSquare.draw(GL_TRIANGLES, 6);
+                break;
+            case 4:
+                multColoredTri.draw(GL_TRIANGLES, 3);
                 break;
         }
 
