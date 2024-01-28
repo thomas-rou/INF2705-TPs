@@ -79,8 +79,17 @@ int main(int argc, char* argv[])
     // TODO Partie 2: Shader program de transformation.
     // ... transform;
     // ... location;
+    ShaderProgram transformShaderProgram;
     {
-        // ...
+        std::string transformVertexShaderSource = readFile("shaders/transform.vs.glsl");
+        std::string transformFragmentShaderSource = readFile("shaders/transform.fs.glsl");
+        auto src = transformVertexShaderSource.c_str();
+        Shader vertexShader(GL_VERTEX_SHADER, src);
+        transformShaderProgram.attachShader(vertexShader);
+        src = transformFragmentShaderSource.c_str();
+        Shader fragmentShader(GL_FRAGMENT_SHADER, src);
+        transformShaderProgram.attachShader(fragmentShader);
+        transformShaderProgram.link();
     }
 
     // Variables pour la mise à jour, ne pas modifier.
@@ -130,14 +139,16 @@ int main(int argc, char* argv[])
     elementsSquare.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
     // TODO Partie 2: Instancier le cube ici.
-    // ...
+    BasicShapeElements cube(cubeVertices, sizeof(cubeVertices), cubeIndexes, sizeof(cubeIndexes));
+    cube.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
+    cube.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
     // TODO Partie 1: Donner une couleur de remplissage aux fonds.
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClearDepth(1.0f);
 
     // TODO Partie 2: Activer le depth test.
-
+    glEnable(GL_DEPTH_TEST);
 
     int selectShape = 0;
     bool isRunning = true;
@@ -195,6 +206,11 @@ int main(int argc, char* argv[])
                 colorShaderProgram.use();
                 break;
             }
+            case 6:
+            {
+                transformShaderProgram.use();
+                break;
+            }
         }
 
         // TODO Partie 2: Calcul des matrices et envoyer une matrice résultante mvp au shader.
@@ -202,7 +218,21 @@ int main(int argc, char* argv[])
         {
             angleDeg += 0.5f;
             // Utiliser glm pour les calculs de matrices.
-            // glm::mat4 matrix;
+            glm::mat4 mvpMatrix(1.0f);
+            glm::mat4 modelMatrix(1.0f);
+            glm::mat4 viewMatrix(1.0f);
+            glm::mat4 projectionMatrix(1.0f);
+
+            modelMatrix = glm::rotate(modelMatrix, glm::degrees(angleDeg), glm::vec3(0.1f, 1.0f, 0.1f));
+            viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.5f, -2.0f));
+            projectionMatrix = glm::perspective(glm::degrees(70.0f), (float)w.getWidth() / (float)w.getHeight(), 0.1f, 10.0f);
+            mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
+            GLint mvpMatrixLocation = transformShaderProgram.getUniformLoc("mvpMatrix");
+            if (mvpMatrixLocation == -1) {
+                std::cerr << "Could not find uniform variable 'mvpMatrix'\n";
+            } else {
+                glUniformMatrix4fv(mvpMatrixLocation, 1, GL_FALSE, &mvpMatrix[0][0]);
+            }
         }
 
         // TODO Partie 1: Dessiner la forme sélectionnée.
@@ -225,6 +255,9 @@ int main(int argc, char* argv[])
                 break;
             case 5:
                 elementsSquare.draw(GL_TRIANGLES, 6);
+                break;
+            case 6:
+                cube.draw(GL_TRIANGLES, 36);
                 break;
         }
 
