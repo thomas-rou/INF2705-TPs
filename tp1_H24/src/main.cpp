@@ -91,8 +91,8 @@ int main(int argc, char* argv[])
 
     float angleDeg = 0.0f;
 
-    GLfloat brightRed[] = {1.0f, 0.2f, 0.2f, 1.0f};
-    GLfloat brightGreen[] = {0.2f, 1.0f, 0.2f, 1.0f};
+    GLfloat brightRed[] = {1.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat brightGreen[] = {0.0f, 1.0f, 0.0f, 1.0f};
     GLfloat brightBlue[] = {0.2f, 0.2f, 1.0f, 1.0f};
 
 
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
         // de votre choix ou plusieurs différentes en chaque points.
         brightRed[0], brightRed[1], brightRed[2],
         brightGreen[0], brightGreen[1], brightGreen[2],
-        brightBlue[0], brightBlue[1], brightBlue[2],
+        brightRed[0], brightRed[1], brightRed[2],
     };
 
     // Instancier vos formes ici.
