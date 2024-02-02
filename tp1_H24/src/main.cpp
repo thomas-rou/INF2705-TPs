@@ -39,13 +39,7 @@ int main(int argc, char* argv[])
 
     printGLInfo();
 
-    // SDL_GL_SetSwapInterval(1);
-    // GLint maxSamples; // Declare maxSamples variable
-    // glGetIntegerv(GL_MAX_SAMPLES, &maxSamples); // Call glGetIntegerv function
-    // std::cout << "Max samples: " << maxSamples << std::endl;
-
-
-    // TODO Partie 1: Instancier les shader programs ici.
+    //Instancier les shader programs ici.
     ShaderProgram basicShaderProgram;
     { // Les accolades vont permettre de détruire le code des shaders plus rapidement
         // Vous devez lire le code des shaders dans "shaders/"
@@ -76,9 +70,7 @@ int main(int argc, char* argv[])
         colorShaderProgram.link();
     }
 
-    // TODO Partie 2: Shader program de transformation.
-    // ... transform;
-    // ... location;
+    // Shader program de transformation.
     ShaderProgram transformShaderProgram;
     {
         std::string transformVertexShaderSource = readFile("shaders/transform.vs.glsl");
@@ -106,7 +98,7 @@ int main(int argc, char* argv[])
 
     // Tableau non constant de la couleur
     GLfloat onlyColorTriVertices[] = {
-        // TODO Partie 1: Rempliser adéquatement le tableau.
+        // Remplir adéquatement le tableau.
         // Vous pouvez expérimenter avec une couleur uniforme
         // de votre choix ou plusieurs différentes en chaque points.
         brightRed[0], brightRed[1], brightRed[2],
@@ -114,7 +106,7 @@ int main(int argc, char* argv[])
         brightBlue[0], brightBlue[1], brightBlue[2],
     };
 
-    // TODO Partie 1: Instancier vos formes ici.
+    // Instancier vos formes ici.
     BasicShapeArrays onlyColorTri(triVertices, sizeof(triVertices));
     onlyColorTri.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
@@ -137,16 +129,16 @@ int main(int argc, char* argv[])
     elementsSquare.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
     elementsSquare.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
-    // TODO Partie 2: Instancier le cube ici.
+    // Instancier le cube ici.
     BasicShapeElements cube(cubeVertices, sizeof(cubeVertices), cubeIndexes, sizeof(cubeIndexes));
     cube.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
     cube.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
-    // TODO Partie 1: Donner une couleur de remplissage aux fonds.
+    // Donner une couleur de remplissage aux fonds.
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClearDepth(1.0f);
 
-    // TODO Partie 2: Activer le depth test.
+    // Activer le depth test.
     glEnable(GL_DEPTH_TEST);
 
     int selectShape = 0;
@@ -156,7 +148,7 @@ int main(int argc, char* argv[])
         if (w.shouldResize())
             glViewport(0, 0, w.getWidth(), w.getHeight());
 
-        // TODO Partie 1: Nettoyer les tampons appropriées.
+        // Nettoyer les tampons appropriées.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -166,7 +158,7 @@ int main(int argc, char* argv[])
             std::cout << "Selected shape: " << selectShape << std::endl;
         }
 
-        // TODO Partie 1: Mise à jour des données du triangle
+        // Mise à jour des données du triangle
         changeRGB(&onlyColorTriVertices[0]);
         changeRGB(&onlyColorTriVertices[3]);
         changeRGB(&onlyColorTriVertices[6]);
@@ -176,7 +168,7 @@ int main(int argc, char* argv[])
         changePos(posPtr, cx, cy, dx, dy);
         multColoredTri.unmapPosData();
 
-        // TODO Partie 1: Utiliser le bon shader programme selon la forme.
+        // Utiliser le bon shader programme selon la forme.
         // N'hésiter pas à utiliser le fallthrough du switch case.
         switch (selectShape)
         {
@@ -207,7 +199,7 @@ int main(int argc, char* argv[])
             }
         }
 
-        // TODO Partie 2: Calcul des matrices et envoyer une matrice résultante mvp au shader.
+        // Calcul des matrices et envoyer une matrice résultante mvp au shader.
         if (selectShape == 6)
         {
             angleDeg += 0.5f;
@@ -229,7 +221,7 @@ int main(int argc, char* argv[])
             }
         }
 
-        // TODO Partie 1: Dessiner la forme sélectionnée.
+        // Dessiner la forme sélectionnée.
         switch (selectShape)
         {
             case 0:

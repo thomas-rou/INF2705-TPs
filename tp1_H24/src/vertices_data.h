@@ -2,7 +2,7 @@
 #define VERTICES_DATA_H
 
 const GLfloat triVertices[] = {
-    // TODO Partie 1: Définir les coordonnées d'un triangle
+    // Définir les coordonnées d'un triangle
     // en considérant le type de l'entrée du vertex shader.
     -0.5f, -0.5f, 0.0f,
     0.5f, -0.5f, 0.0f,
@@ -10,7 +10,7 @@ const GLfloat triVertices[] = {
 };
 
 const GLfloat squareVertices[] = {
-    // TODO Partie 1: Définir les coordonnées d'un carré
+    // Définir les coordonnées d'un carré
     // fait de deux triangles en considérant le type de
 	// l'entrée du vertex shader.
     -0.5f, -0.5f, 0.0f,
@@ -22,7 +22,7 @@ const GLfloat squareVertices[] = {
 };
 
 const GLfloat colorTriVertices[] = {
-    // TODO Partie 1: Définir les coordonnées d'un triangle
+    // Définir les coordonnées d'un triangle
     // avec les attributs de position et couleur entrelacés
     // en considérant le type des entrées du vertex shader.
     -0.5f, -0.5f, 0.0f, 1.0f, 0.2f, 0.2f,
@@ -31,7 +31,7 @@ const GLfloat colorTriVertices[] = {
 };
 
 const GLfloat colorSquareVertices[] = {
-    // TODO Partie 1: Définir les coordonnées d'un carré
+    // Définir les coordonnées d'un carré
     // fait de deux triangles avec les attributs de
     // position et couleur entrelacés en considérant le type
     // des entrées du vertex shader.
@@ -45,7 +45,7 @@ const GLfloat colorSquareVertices[] = {
 
 
 const GLfloat colorSquareVerticesReduced[] = {
-    // TODO Partie 1: Définir les coordonnées d'un carré
+    // Définir les coordonnées d'un carré
     // fait de deux triangles avec les attributs de
     // position et couleur entrelacés en considérant le type
     // des entrées du vertex shader. Il devrait y avoir
@@ -56,7 +56,7 @@ const GLfloat colorSquareVerticesReduced[] = {
     0.5f,  0.5f, 0.0f, 1.0f, 0.2f, 0.2f,
 };
 const GLubyte indexes[] = {
-    // TODO Partie 1: Définir les indexes pour générer un
+    // Définir les indexes pour générer un
     // carré en réutilisant certaines vertices.
     0, 1, 2, // first triangle
     1, 2, 3  // second triangle
