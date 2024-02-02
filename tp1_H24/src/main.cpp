@@ -102,7 +102,6 @@ int main(int argc, char* argv[])
     GLfloat brightRed[] = {1.0f, 0.2f, 0.2f, 1.0f};
     GLfloat brightGreen[] = {0.2f, 1.0f, 0.2f, 1.0f};
     GLfloat brightBlue[] = {0.2f, 0.2f, 1.0f, 1.0f};
-    GLfloat brightYellow[] = {1.0f, 1.0f, 0.2f, 1.0f};
 
 
     // Tableau non constant de la couleur
@@ -110,9 +109,9 @@ int main(int argc, char* argv[])
         // TODO Partie 1: Rempliser adéquatement le tableau.
         // Vous pouvez expérimenter avec une couleur uniforme
         // de votre choix ou plusieurs différentes en chaque points.
-        brightRed[0], brightRed[1], brightRed[2], brightRed[3],
-        brightGreen[0], brightGreen[1], brightGreen[2], brightGreen[3],
-        brightBlue[0], brightBlue[1], brightBlue[2], brightBlue[3],
+        brightRed[0], brightRed[1], brightRed[2],
+        brightGreen[0], brightGreen[1], brightGreen[2],
+        brightBlue[0], brightBlue[1], brightBlue[2],
     };
 
     // TODO Partie 1: Instancier vos formes ici.
@@ -130,9 +129,9 @@ int main(int argc, char* argv[])
     coloredSquare.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
     coloredSquare.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
-    BasicShapeMultipleArrays multColoredTri(colorTriVertices, sizeof(colorTriVertices), colorTriVertices, sizeof(colorTriVertices));
-    multColoredTri.enablePosAttribute(0, 3, 6*sizeof(GLfloat), 0);
-    multColoredTri.enableColorAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
+    BasicShapeMultipleArrays multColoredTri(triVertices, sizeof(triVertices), onlyColorTriVertices, sizeof(onlyColorTriVertices));
+    multColoredTri.enablePosAttribute(0, 3, 3*sizeof(GLfloat), 0);
+    multColoredTri.enableColorAttribute(1, 3, 3*sizeof(GLfloat), 0);
 
     BasicShapeElements elementsSquare(colorSquareVerticesReduced, sizeof(colorSquareVerticesReduced), indexes, sizeof(indexes));
     elementsSquare.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
@@ -174,13 +173,8 @@ int main(int argc, char* argv[])
         multColoredTri.updateColorData(onlyColorTriVertices, sizeof(onlyColorTriVertices));
 
         GLfloat* posPtr = multColoredTri.mapPosData();
-        multColoredTri.unmapPosData();
-        if (posPtr == nullptr)
-        {
-            std::cerr << "Could not map position data!\n";
-            return -1;
-        }
         changePos(posPtr, cx, cy, dx, dy);
+        multColoredTri.unmapPosData();
 
         // TODO Partie 1: Utiliser le bon shader programme selon la forme.
         // N'hésiter pas à utiliser le fallthrough du switch case.
@@ -223,9 +217,9 @@ int main(int argc, char* argv[])
             glm::mat4 viewMatrix(1.0f);
             glm::mat4 projectionMatrix(1.0f);
 
-            modelMatrix = glm::rotate(modelMatrix, glm::degrees(angleDeg), glm::vec3(0.1f, 1.0f, 0.1f));
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.5f, -2.0f));
-            projectionMatrix = glm::perspective(glm::degrees(70.0f), (float)w.getWidth() / (float)w.getHeight(), 0.1f, 10.0f);
+            modelMatrix = glm::rotate(modelMatrix, glm::radians(angleDeg), glm::vec3(0.1f, 1.0f, 0.1f));
+            viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, -0.5f, -2.0f));
+            projectionMatrix = glm::perspective(glm::radians(70.0f), (float)w.getWidth() / (float)w.getHeight(), 0.1f, 10.0f);
             mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
             GLint mvpMatrixLocation = transformShaderProgram.getUniformLoc("mvpMatrix");
             if (mvpMatrixLocation == -1) {
