@@ -39,15 +39,11 @@ int main(int argc, char* argv[])
 
     printGLInfo();
 
-    //Instancier les shader programs ici.
+    //Instanciation des shaders
     ShaderProgram basicShaderProgram;
-    { // Les accolades vont permettre de détruire le code des shaders plus rapidement
-        // Vous devez lire le code des shaders dans "shaders/"
-        // avec la fonction "readFile".
+    {
         std::string basicVertexShaderSource = readFile("shaders/basic.vs.glsl");
         std::string basicFragmentShaderSource = readFile("shaders/basic.fs.glsl");
-        // Vous pouvez par la suite instancier vos shaders, les attacher et les lier
-        // au programme.
         auto src = basicVertexShaderSource.c_str();
         Shader vertexShader(GL_VERTEX_SHADER, src);
         basicShaderProgram.attachShader(vertexShader);
@@ -70,7 +66,6 @@ int main(int argc, char* argv[])
         colorShaderProgram.link();
     }
 
-    // Shader program de transformation.
     ShaderProgram transformShaderProgram;
     {
         std::string transformVertexShaderSource = readFile("shaders/transform.vs.glsl");
@@ -98,15 +93,12 @@ int main(int argc, char* argv[])
 
     // Tableau non constant de la couleur
     GLfloat onlyColorTriVertices[] = {
-        // Remplir adéquatement le tableau.
-        // Vous pouvez expérimenter avec une couleur uniforme
-        // de votre choix ou plusieurs différentes en chaque points.
         brightRed[0], brightRed[1], brightRed[2],
         brightGreen[0], brightGreen[1], brightGreen[2],
         brightRed[0], brightRed[1], brightRed[2],
     };
 
-    // Instancier vos formes ici.
+    // Instanciation des formes
     BasicShapeArrays onlyColorTri(triVertices, sizeof(triVertices));
     onlyColorTri.enableAttribute(0, 3, 3*sizeof(GLfloat), 0);
 
@@ -129,12 +121,12 @@ int main(int argc, char* argv[])
     elementsSquare.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
     elementsSquare.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
-    // Instancier le cube ici.
+    // Instanciation du cube
     BasicShapeElements cube(cubeVertices, sizeof(cubeVertices), cubeIndexes, sizeof(cubeIndexes));
     cube.enableAttribute(0, 3, 6*sizeof(GLfloat), 0);
     cube.enableAttribute(1, 3, 6*sizeof(GLfloat), 3*sizeof(GLfloat));
 
-    // Donner une couleur de remplissage aux fonds.
+    // Couleur de remplissage aux fonds.
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClearDepth(1.0f);
 
