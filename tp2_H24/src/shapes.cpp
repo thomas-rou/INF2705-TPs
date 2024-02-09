@@ -4,7 +4,7 @@ BasicShapeArrays::BasicShapeArrays(const GLfloat* data, GLsizeiptr byteSize)
 {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
-    
+
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, byteSize, data, GL_STATIC_DRAW);
@@ -37,11 +37,11 @@ BasicShapeMultipleArrays::BasicShapeMultipleArrays(const GLfloat* pos, GLsizeipt
 {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
-    
+
     glGenBuffers(1, &m_posVbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_posVbo);
     glBufferData(GL_ARRAY_BUFFER, posByteSize, pos, GL_STATIC_DRAW);
-    
+
     glGenBuffers(1, &m_colorVbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_colorVbo);
     glBufferData(GL_ARRAY_BUFFER, colorByteSize, color, GL_STATIC_DRAW);
@@ -100,15 +100,15 @@ void BasicShapeMultipleArrays::draw(GLenum mode, GLsizei count)
 }
 
 
-BasicShapeElements::BasicShapeElements(const GLfloat* data, GLsizeiptr byteSize, const GLubyte* indexes, GLsizeiptr indexesByteSize)
+BasicShapeElements::BasicShapeElements(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize)
 {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
-    
+
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, byteSize, data, GL_STATIC_DRAW);
-    
+
     glGenBuffers(1, &m_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexesByteSize, indexes, GL_STATIC_DRAW);
@@ -135,5 +135,5 @@ void BasicShapeElements::enableAttribute(GLuint index, GLint size, GLsizei strid
 void BasicShapeElements::draw(GLenum mode, GLsizei count)
 {
     glBindVertexArray(m_vao);
-    glDrawElements(mode, count, GL_UNSIGNED_BYTE, 0);
+    glDrawElements(mode, count, GL_UNSIGNED_INT, 0);
 }

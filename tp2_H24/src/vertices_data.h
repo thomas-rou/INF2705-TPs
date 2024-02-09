@@ -36,7 +36,7 @@ const GLfloat cubeVertices[] = {
      0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 1.0f,
 };
 
-const GLubyte cubeIndexes[] = {
+const GLuint cubeIndexes[] = {
      0,  1,  2,
      1,  3,  2,
 
