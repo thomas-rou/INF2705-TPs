@@ -20,7 +20,7 @@ endif
 
 SRC=main
 BUILD=./build-$(shell uname)
-EXE=$(BUILD)/tp.exe
+EXE=$(BUILD)/tp2.exe
 
 SRC = $(wildcard *.cpp) $(wildcard */*.cpp)
 OBJ = $(addprefix $(BUILD)/, $(notdir $(SRC:.cpp=.o)))
