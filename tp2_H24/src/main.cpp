@@ -50,16 +50,6 @@ int main(int argc, char* argv[])
         mvpLocation = transform.getUniformLoc("mvp");
     }
 
-
-    float cx = 0, cy = 0;
-    float dx = 0.019;
-    float dy = 0.0128;
-    GLfloat onlyColorTriVertices[] = {
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f
-    };
-
     BasicShapeElements cubeElements(cubeVertices, sizeof(cubeVertices), cubeIndexes, sizeof(cubeIndexes));
     cubeElements.enableAttribute(0, 3, 6, 0);
     cubeElements.enableAttribute(1, 3, 6, 3);
@@ -94,16 +84,14 @@ int main(int argc, char* argv[])
             case 6: transform.use(); break;
         }
 
-        if (selectShape == 6)
-        {
-            static float angleDeg = 0.0f;
-            angleDeg += 0.5f;
-            glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(angleDeg), glm::vec3(0.1, 1, 0.1));
-            glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, -0.5, -2));
-            glm::mat4 proj = glm::perspective(glm::radians(70.0f), (float)w.getWidth()/(float)w.getHeight(), 0.1f, 10.0f);
-            glm::mat4 mvp = proj * view * model;
-            glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
-        }
+
+        static float angleDeg = 0.0f;
+        angleDeg += 0.5f;
+        glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(angleDeg), glm::vec3(0.1, 1, 0.1));
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, -0.5, -2));
+        glm::mat4 proj = glm::perspective(glm::radians(70.0f), (float)w.getWidth()/(float)w.getHeight(), 0.1f, 10.0f);
+        glm::mat4 mvp = proj * view * model;
+        glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
 
         switch (selectShape)
         {
@@ -170,4 +158,12 @@ void printGLInfo()
     std::cout << "    Renderer: " << glGetString(GL_RENDERER) << std::endl;
     std::cout << "    Version: "  << glGetString(GL_VERSION)  << std::endl;
     std::cout << "    Shading version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+}
+
+std::string readFile(const char* path)
+{
+    std::ifstream file(path);
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
 }
