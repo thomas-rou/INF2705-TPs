@@ -12,6 +12,7 @@
 #include "shader_program.h"
 #include "vertices_data.h"
 #include "shapes.h"
+#include "camera.h"
 
 
 void printGLInfo();
@@ -59,6 +60,13 @@ int main(int argc, char* argv[])
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST); // a ajouter avec les transformations
 
+    // Instanciation camera
+    glm::vec3 pos(0, 0, 0);
+    glm::vec2 ori(0, 0);
+    Camera camera(pos, ori);
+    // définition de var pour orientation de la caméra
+    int mouseX, mouseY;
+
     bool isRunning = true;
     while (isRunning)
     {
@@ -73,36 +81,39 @@ int main(int argc, char* argv[])
             std::cout << "Selected shape: " << selectShape << std::endl;
         }
 
-        switch (selectShape)
-        {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6: transform.use(); break;
+        // Changement de la position de la caméra
+        if (w.getKeyHold(Window::Key::W)){
+            pos.z -= 0.05f;
+        }
+        if (w.getKeyHold(Window::Key::S)){
+            pos.z += 0.05f;
+        }
+        if (w.getKeyHold(Window::Key::A)){
+            pos.x -= 0.05f;
+        }
+        if (w.getKeyHold(Window::Key::D)){
+            pos.x += 0.05f;
         }
 
+        // Changement de l'orientation de la caméra
+        w.getMouseMotion(mouseX, mouseY);
+        ori.x += mouseX * 0.01f;
+        ori.y += mouseY * 0.01f;
+
+        // Utilisation shader
+        transform.use();
 
         static float angleDeg = 0.0f;
         angleDeg += 0.5f;
         glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(angleDeg), glm::vec3(0.1, 1, 0.1));
-        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, -0.5, -2));
+        // assigner la position de la caméra et l'orientation, selon le type de vue
+        glm::mat4 view = camera.getFirstPersonViewMatrix();
         glm::mat4 proj = glm::perspective(glm::radians(70.0f), (float)w.getWidth()/(float)w.getHeight(), 0.1f, 10.0f);
         glm::mat4 mvp = proj * view * model;
         glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
 
-        switch (selectShape)
-        {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6: cubeElements.draw(GL_TRIANGLES, 36);          break;
-        }
+        // Toujours dessiner le cube
+        cubeElements.draw(GL_TRIANGLES, 36);
 
         w.swap();
         w.pollEvent();
