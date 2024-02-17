@@ -116,8 +116,8 @@ int main(int argc, char* argv[])
 
         // Changement de l'orientation de la caméra
         w.getMouseMotion(mouseX, mouseY);
-        ori.x += mouseX * 0.01f;
-        ori.y += mouseY * 0.01f;
+        ori.x += mouseX * 0.005f;
+        ori.y += mouseY * 0.005f;
 
         // Utilisation shader
         transform.use();
