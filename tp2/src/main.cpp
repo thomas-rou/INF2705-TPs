@@ -71,7 +71,21 @@ int main(int argc, char* argv[])
     int mouseX, mouseY;
     bool isFirstPersonView = true;
     bool isRunning = true;
-    Model obj("obj_loader.h");
+    // Instanciation objets
+    Model tree("");
+    Model rock("");
+    Model mushroom("");
+    
+    // Créer un plan carré pour le sol et un plan rectangulaire pour le ruisseau
+    
+    // Répartir 49 groupes d’objets dans la scène
+    // for (int i = 0; i < 49; i++) {
+        // Les groupes possèdent une transformation de translation qui est donnée par getGroupRandomPos,
+        // de rotation en Y aléatoire entre [0; 2π] et mise à l’échelle aléatoire entre [0.7; 1.3].
+    
+        // Calculer la matrice de transformation du groupe
+
+        // Stocker la matrice de transformation du groupe
 
     while (isRunning)
     {
@@ -127,8 +141,12 @@ int main(int argc, char* argv[])
         mat4 mvp = proj * view * model;
         glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
 
-        // Affichage de l'objet
-        obj.draw();
+        // Affichage
+        // for (int i = 0; i < 49; i++) {
+            // Récupérer la matrice de transformation du groupe
+            // Dessiner l'arbre, le rocher et le champignon avec leurs transformations respectives
+
+        // cubeElements.draw(GL_TRIANGLES, 36);
 
         w.swap();
         w.pollEvent();

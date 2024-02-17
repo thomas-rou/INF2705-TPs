@@ -1,25 +1,4 @@
-﻿  textures.cpp
-  utils.cpp
-C:\Users\omarb\Desktop\INF2705-TPs\tp2_H24\src\utils.cpp(8,103): warning C4244: 'argument': conversion from '_Rep' to 'unsigned int', possible loss of data
-C:\Users\omarb\Desktop\INF2705-TPs\tp2_H24\src\utils.cpp(8,103): warning C4244:         with
-C:\Users\omarb\Desktop\INF2705-TPs\tp2_H24\src\utils.cpp(8,103): warning C4244:         [
-C:\Users\omarb\Desktop\INF2705-TPs\tp2_H24\src\utils.cpp(8,103): warning C4244:             _Rep=std::chrono::system_clock::rep
-C:\Users\omarb\Desktop\INF2705-TPs\tp2_H24\src\utils.cpp(8,103): warning C4244:         ]
-C:\Users\omarb\Desktop\INF2705-TPs\tp2_H24\src\utils.cpp(23,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\omarb\Desktop\INF2705-TPs\tp2_H24\src\utils.cpp(24,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  camera.cpp
-C:\Users\omarb\Desktop\INF2705-TPs\tp2\src\camera.cpp(29,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  main.cpp
-  model.cpp
-C:\Users\omarb\Desktop\INF2705-TPs\tp2\src\obj_loader.h(971,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  (compiling source file 'model.cpp')
-  
-C:\Users\omarb\Desktop\INF2705-TPs\tp2\src\model.cpp(21,27): warning C4267: '=': conversion from 'size_t' to 'GLsizei', possible loss of data
-  shader_program.cpp
-  shapes.cpp
-  window.cpp
-  Generating Code...
-  LINK : C:\Users\omarb\Desktop\INF2705-TPs\tp2\src\x64\Debug\tp2.exe not found or not built by the last incremental link; performing full link
+﻿  main.cpp
   00_tp1_intro.vcxproj -> C:\Users\omarb\Desktop\INF2705-TPs\tp2\src\x64\Debug\tp2.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.
