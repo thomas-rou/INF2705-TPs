@@ -72,9 +72,9 @@ int main(int argc, char* argv[])
     bool isFirstPersonView = true;
     bool isRunning = true;
     // Instanciation objets
-    Model tree("");
-    Model rock("");
-    Model mushroom("");
+    Model tree("../models/tree.obj");
+    Model rock("../models/rock.obj");
+    Model mushroom("../models/mushroom.obj");
     
     // Créer un plan carré pour le sol et un plan rectangulaire pour le ruisseau
     
@@ -146,7 +146,11 @@ int main(int argc, char* argv[])
             // Récupérer la matrice de transformation du groupe
             // Dessiner l'arbre, le rocher et le champignon avec leurs transformations respectives
 
-        // cubeElements.draw(GL_TRIANGLES, 36);
+        cubeElements.draw(GL_TRIANGLES, 36);
+
+        tree.draw();
+        rock.draw();
+        mushroom.draw();
 
         w.swap();
         w.pollEvent();
