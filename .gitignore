@@ -33,4 +33,4 @@
 
 # Ignore Visual Studio temporary files, build results, and packages
 .vs/
-.packages/
+packages/
