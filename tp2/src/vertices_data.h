@@ -111,9 +111,9 @@ const GLfloat skyboxVertices[] = {
 	 1.0f, -1.0f,  1.0f
 };
 
-const GLubyte indexes[] = {
-    0, 1, 2,
-    1, 3, 2
+const GLuint indexes[] = {
+     0,  1,  2,
+     1,  3,  2,
 };
 
 #endif // VERTICES_DATA_H

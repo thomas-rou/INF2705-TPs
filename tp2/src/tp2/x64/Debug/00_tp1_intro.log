@@ -1,10 +1,4 @@
 ﻿  main.cpp
-  model.cpp
-C:\Users\omarb\Desktop\INF2705-TPs\tp2\src\obj_loader.h(971,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  (compiling source file 'model.cpp')
-  
-C:\Users\omarb\Desktop\INF2705-TPs\tp2\src\model.cpp(16,24): warning C4267: '=': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Generating Code...
   00_tp1_intro.vcxproj -> C:\Users\omarb\Desktop\INF2705-TPs\tp2\src\x64\Debug\tp2.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

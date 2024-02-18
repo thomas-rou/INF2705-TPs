@@ -54,12 +54,21 @@ int main(int argc, char* argv[])
         mvpLocation = transform.getUniformLoc("mvp");
     }
 
-    BasicShapeElements cubeElements(cubeVertices, sizeof(cubeVertices), cubeIndexes, sizeof(cubeIndexes));
-    cubeElements.enableAttribute(0, 3, 6, 0);
-    cubeElements.enableAttribute(1, 3, 6, 3);
+    // On céer un plan pour faire le sol
 
-    // BasicShapeElements ground(squareVertices, sizeof(squareVertices), indexes, sizeof(indexes));
-    // ground.enableAttribute(0, 3, 3 * sizeof(GLfloat), 0);
+    BasicShapeArrays ground(squareVertices, sizeof(squareVertices));
+    ground.enableAttribute(0, 3, 0, 0);
+    
+    mat4 groundTransform = translate(mat4(1.0f), vec3(0, -1, 0));
+    mat4 groundScale = scale(mat4(1.0f), vec3(60, 1, 60));
+    groundTransform = groundTransform * groundScale;
+
+    // // Create river
+    // BasicShapeElements river(squareVertices, sizeof(squareVertices), indexes, sizeof(indexes));
+    // river.enableAttribute(0, 3, 3 * sizeof(GLfloat), 0);
+    // river.translate(0, -1, -30);
+    // river.scale(60, 0, 20);
+
 
     int selectShape = 0;
 
@@ -70,26 +79,17 @@ int main(int argc, char* argv[])
     vec3 pos(0, 0, 0);
     vec2 ori(0, 0);
     Camera camera(pos, ori);
+    
     // définition de var pour orientation de la caméra
     int mouseX, mouseY;
     bool isFirstPersonView = true;
     bool isRunning = true;
+    
     // Instanciation objets
     Model tree("../models/tree.obj");
     Model rock("../models/rock.obj");
     Model mushroom("../models/mushroom.obj");
     
-    // Créer un plan carré pour le sol et un plan rectangulaire pour le ruisseau
-    
-    // Répartir 49 groupes d’objets dans la scène
-    // for (int i = 0; i < 49; i++) {
-        // Les groupes possèdent une transformation de translation qui est donnée par getGroupRandomPos,
-        // de rotation en Y aléatoire entre [0; 2π] et mise à l’échelle aléatoire entre [0.7; 1.3].
-    
-        // Calculer la matrice de transformation du groupe
-
-        // Stocker la matrice de transformation du groupe
-
     while (isRunning)
     {
         if (w.shouldResize())
@@ -126,10 +126,9 @@ int main(int argc, char* argv[])
         transform.use();
 
         static float angleDeg = 0.0f;
-        angleDeg += 0.5f;
         mat4 model = rotate(mat4(1.0f), radians(angleDeg), vec3(0.1, 1, 0.1));
         
-        // assigner la position de la caméra et l'orientation, selon le type de vue
+        // Assigner la position de la caméra et l'orientation, selon le type de vue
         mat4 view;
         if (isFirstPersonView)
         {
@@ -141,17 +140,11 @@ int main(int argc, char* argv[])
         }
 
         mat4 proj = perspective(radians(70.0f), (float)w.getWidth()/(float)w.getHeight(), 0.1f, 10.0f);
-        mat4 mvp = proj * view * model;
+        mat4 mvp = proj * view * groundTransform;
         glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
-
-        // Affichage
-        // for (int i = 0; i < 49; i++) {
-            // Récupérer la matrice de transformation du groupe
-            // Dessiner l'arbre, le rocher et le champignon avec leurs transformations respectives
-
-        //cubeElements.draw(GL_TRIANGLES, 36);
-
-        tree.draw();
+        ground.draw(GL_TRIANGLES, 6);
+            
+        // tree.draw();
         //rock.draw();
         //mushroom.draw();
 
