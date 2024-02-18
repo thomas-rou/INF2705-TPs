@@ -58,6 +58,9 @@ int main(int argc, char* argv[])
     cubeElements.enableAttribute(0, 3, 6, 0);
     cubeElements.enableAttribute(1, 3, 6, 3);
 
+    // BasicShapeElements ground(squareVertices, sizeof(squareVertices), indexes, sizeof(indexes));
+    // ground.enableAttribute(0, 3, 3 * sizeof(GLfloat), 0);
+
     int selectShape = 0;
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -146,11 +149,11 @@ int main(int argc, char* argv[])
             // Récupérer la matrice de transformation du groupe
             // Dessiner l'arbre, le rocher et le champignon avec leurs transformations respectives
 
-        cubeElements.draw(GL_TRIANGLES, 36);
+        //cubeElements.draw(GL_TRIANGLES, 36);
 
         tree.draw();
-        rock.draw();
-        mushroom.draw();
+        //rock.draw();
+        //mushroom.draw();
 
         w.swap();
         w.pollEvent();
