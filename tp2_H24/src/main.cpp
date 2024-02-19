@@ -55,8 +55,6 @@ int main(int argc, char* argv[])
     cubeElements.enableAttribute(0, 3, 6, 0);
     cubeElements.enableAttribute(1, 3, 6, 3);
 
-    int selectShape = 0;
-
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST); // a ajouter avec les transformations
 
@@ -66,6 +64,7 @@ int main(int argc, char* argv[])
     Camera camera(pos, ori);
     // définition de var pour orientation de la caméra
     int mouseX, mouseY;
+    bool isDifferentview = true;
 
     bool isRunning = true;
     while (isRunning)
@@ -75,11 +74,10 @@ int main(int argc, char* argv[])
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // GL_DEPTH_BUFFER_BIT a ajouter avec les transformations
 
-        if (w.getKeyPress(Window::Key::T))
-        {
-            selectShape = ++selectShape < 7 ? selectShape : 0;
-            std::cout << "Selected shape: " << selectShape << std::endl;
-        }
+
+        isDifferentview = w.getMouseScrollDirection() != 0 ? !isDifferentview : isDifferentview;
+        glm::mat4 view = isDifferentview ? camera.getFirstPersonViewMatrix() : camera.getThirdPersonViewMatrix();
+
 
         // Changement de la position de la caméra
         if (w.getKeyHold(Window::Key::W)){
@@ -103,8 +101,6 @@ int main(int argc, char* argv[])
         // Utilisation shader
         transform.use();
 
-        glm::mat4 view = camera.getFirstPersonViewMatrix();
-
         static float angleDeg = 0.0f;
         angleDeg += 0.5f;
         glm::mat4 model = glm::mat4(1.0f);
@@ -112,8 +108,6 @@ int main(int argc, char* argv[])
         glm::mat4 proj = glm::perspective(glm::radians(70.0f), (float)w.getWidth()/(float)w.getHeight(), 0.1f, 10.0f);
         glm::mat4 mvp = proj * view * model;
         glUniformMatrix4fv(mvpLocation, 1, GL_FALSE, &mvp[0][0]);
-
-        
 
         // Toujours dessiner le cube
         cubeElements.draw(GL_TRIANGLES, 36);
