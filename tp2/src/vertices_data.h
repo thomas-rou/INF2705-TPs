@@ -3,6 +3,17 @@
 
 // Merge avec le fichier du tp1
 
+const GLfloat squareVertices[] = {
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f,
+
+     0.5f, -0.5f, 0.0f,
+     0.5f,  0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f
+};
+
+
 const GLfloat cubeVertices[] = {
     // +z
     -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,
@@ -98,6 +109,11 @@ const GLfloat skyboxVertices[] = {
 	 1.0f, -1.0f, -1.0f,
 	-1.0f, -1.0f,  1.0f,
 	 1.0f, -1.0f,  1.0f
+};
+
+const GLuint indexes[] = {
+     0,  1,  2,
+     1,  3,  2,
 };
 
 #endif // VERTICES_DATA_H

@@ -44,6 +44,8 @@ private:
 class BasicShapeElements
 {
 public:
+    BasicShapeElements();
+    void setData(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize);
     BasicShapeElements(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize);
     ~BasicShapeElements();
 
