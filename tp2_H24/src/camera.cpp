@@ -14,9 +14,10 @@ glm::mat4 Camera::getFirstPersonViewMatrix()
 	// Calcul et retour de la matrice de vue en première personne
 	// à partir des attributs de la classe
 	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::rotate(view, m_orientation.y, glm::vec3(1.0f, 0.0f, 0.0f));
-	view = glm::rotate(view, m_orientation.x, glm::vec3(0.0f, 1.0f, 0.0f));
 	view = glm::translate(view, -m_position);
+	view = glm::rotate(view, m_orientation.x, glm::vec3(0.0f, -m_position.x, 0.0f));
+	view = glm::rotate(view, m_orientation.y, glm::vec3(-m_position.x, 0.0f, 0.0f));
+	
 	return view;
 }
 
