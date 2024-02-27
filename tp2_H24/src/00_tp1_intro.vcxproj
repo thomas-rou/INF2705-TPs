@@ -177,6 +177,8 @@
     <None Include="packages.config" />
     <None Include="shaders\model.fs.glsl" />
     <None Include="shaders\model.vs.glsl" />
+    <None Include="shaders\skybox.fs.glsl" />
+    <None Include="shaders\skybox.vs.glsl" />
     <None Include="shaders\water.fs.glsl" />
     <None Include="shaders\water.vs.glsl" />
   </ItemGroup>
