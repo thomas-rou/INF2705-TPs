@@ -74,6 +74,20 @@ int main(int argc, char* argv[])
         riverTimeLoc = riverShader.getUniformLoc("dtime");
     }
 
+    ShaderProgram skyboxShader;
+    GLint skyboxMvpLoc;
+    {
+        std::string skyboxVertexCode = readFile("./shaders/skybox.vs.glsl");
+        std::string skyboxFragmentCode = readFile("./shaders/skybox.fs.glsl");
+
+        Shader vertexShader(GL_VERTEX_SHADER, skyboxVertexCode.c_str());
+        Shader fragmentShader(GL_FRAGMENT_SHADER, skyboxFragmentCode.c_str());
+        skyboxShader.attachShader(vertexShader);
+        skyboxShader.attachShader(fragmentShader);
+        skyboxShader.link();
+        skyboxMvpLoc = skyboxShader.getUniformLoc("mvp");
+    }
+
     // Instanciation des éléments
     BasicShapeElements ground;
     ground.setData(groundVertices, sizeof(groundVertices), groundIndexes, sizeof(groundIndexes));
@@ -90,6 +104,10 @@ int main(int argc, char* argv[])
     hud.enableAttribute(0, 3, 5, 0);
     hud.enableAttribute(1, 2, 5, 3);
 
+    BasicShapeArrays skybox(skyboxVertices, sizeof(skyboxVertices));
+    skybox.enableAttribute(0, 3, 3, 0);
+
+
     // Models
     Model suzanne("../models/suzanne.obj");
     Model tree("../models/tree.obj");
@@ -105,11 +123,13 @@ int main(int argc, char* argv[])
     Texture2D riverTexture("../textures/waterSeamless.jpg", GL_REPEAT);
     Texture2D hudTexture("../textures/heart.png", GL_CLAMP_TO_BORDER);
 
+    TextureCubeMap skyboxTexture(skyboxPathsindexes);
+
     // mipmap pour textures répétées
     groundTexture.enableMipmap();
     riverTexture.enableMipmap();
 
-    // Groups
+    // Groupes
     glm::mat4 treeModel[GROUPS_TABLE_SIZE];
     glm::mat4 rockModel[GROUPS_TABLE_SIZE];
     glm::mat4 mushroomModel[GROUPS_TABLE_SIZE];
@@ -169,7 +189,7 @@ int main(int argc, char* argv[])
     // Enable face culling
     glCullFace(GL_FRONT);
     glFrontFace(GL_CW);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     bool isRunning = true;
     while (isRunning)
@@ -183,15 +203,15 @@ int main(int argc, char* argv[])
 
         // Changement de la position de la caméra
         float theta = glm::radians(ori.x);
-        float posSpeed = 0.05f;
-        float oriSpeed = 0.01f;
-        glm::vec3 forward(glm::sin(theta), 0., -glm::cos(theta));
-        glm::vec3 right = glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f));
+        float posSpeed = 0.1f;
+        float oriSpeed = 0.05f;
+        glm::vec3 front(glm::sin(theta), 0., -glm::cos(theta));
+        glm::vec3 right = glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f));
         if (w.getKeyHold(Window::Key::W)){
-            pos += posSpeed * forward;
+            pos += posSpeed * front;
         }
         if (w.getKeyHold(Window::Key::S)){
-            pos -= posSpeed * forward;
+            pos -= posSpeed * front;
         }
         if (w.getKeyHold(Window::Key::A)){
             pos -= posSpeed * right;
@@ -243,7 +263,7 @@ int main(int argc, char* argv[])
         river.draw(GL_TRIANGLES, 6);
         riverTexture.unuse();
 
-        // suzanne model matrix if third person
+        // suzanne model if in third person
         modelShader.use();
         glm::mat4 model = glm::mat4(1.0f);
         if (isthirdPerson) {
@@ -266,45 +286,55 @@ int main(int argc, char* argv[])
         groundTexture.unuse();
 
         // display objects groups
-        // trees
+        // display trees
+        treeTexture.use();
         for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {
             mvp = displayMatrix * treeModel[i];
             glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-            treeTexture.use();
-            tree.draw();
-            treeTexture.unuse();
-
-            // rocks
-            mvp = displayMatrix * rockModel[i];
-            glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-            rockTexture.use();
-            rock.draw();
-            rockTexture.unuse();
-
-            // mushroom
-            mvp = displayMatrix * mushroomModel[i];
-            glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-            mushroomTexture.use();
-            mushroom.draw();
-            mushroomTexture.use();
+            tree.draw();            
         }
+        treeTexture.unuse();
 
-        // hud
+        rockTexture.use();
+        for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {
+            // display rocks
+            mvp = displayMatrix * rockModel[i];
+            glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);            
+            rock.draw();            
+        }
+        rockTexture.unuse();
+
+        mushroomTexture.use();
+        for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {
+            // display mushroom
+            mvp = displayMatrix * mushroomModel[i];
+            glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);            
+            mushroom.draw();            
+        }
+        mushroomTexture.unuse();
+
+        // display hud
         glDepthFunc(GL_ALWAYS);
         model = glm::mat4(1.0f);
-        proj = glm::mat4(1.0f);
         float scaleX = 50.0f;
         float scaleY = 50.0f;
-        model = glm::translate(model, glm::vec3(250.0f/4.0f, 250.0f/4.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(scaleX, scaleY, 0.0f));
-        proj = glm::ortho(0.0f, float(w.getWidth()), 0.0f, float(w.getHeight()));
-        mvp = proj * model;
+        model = glm::translate(model, glm::vec3(scaleX * 6.0f / 4.0f, scaleY * 6.0f / 4.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0f));
+        glm::mat4 hudProj = glm::ortho(0.0f, float(w.getWidth()), 0.0f, float(w.getHeight()));
+        mvp = hudProj * model;
 
         glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
         hudTexture.use();
         hud.draw(GL_TRIANGLES, 6);
         hudTexture.unuse();
 
+        // display skybox
+        glDepthFunc(GL_LEQUAL);
+        skyboxShader.use();
+        mvp = proj * glm::mat4(glm::mat3(view));
+        glUniformMatrix4fv(skyboxMvpLoc, 1, GL_FALSE, &mvp[0][0]);
+        skyboxTexture.use();
+        skybox.draw(GL_TRIANGLES, 36);
         glDepthFunc(GL_LESS);
 
         w.swap();
