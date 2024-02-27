@@ -136,4 +136,13 @@ const GLfloat skyboxVertices[] = {
 	 1.0f, -1.0f,  1.0f
 };
 
+const char* skyboxPathsindexes[] = {
+	"../textures/skybox/Daylight Box_Right.bmp",
+	"../textures/skybox/Daylight Box_Left.bmp",
+	"../textures/skybox/Daylight Box_Top.bmp",
+	"../textures/skybox/Daylight Box_Bottom.bmp",
+	"../textures/skybox/Daylight Box_Front.bmp",
+	"../textures/skybox/Daylight Box_Back.bmp",
+};
+
 #endif // VERTICES_DATA_H
