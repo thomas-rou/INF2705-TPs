@@ -58,6 +58,22 @@ int main(int argc, char* argv[])
         modelMvpLoc = modelShader.getUniformLoc("mvp");
     }
 
+    ShaderProgram riverShader;
+    GLint riverMvpLoc;
+    GLint riverTimeLoc;
+    {
+        std::string riverVertexCode = readFile("./shaders/water.vs.glsl");
+        std::string riverFragmentCode = readFile("./shaders/water.fs.glsl");
+
+        Shader vertexShader(GL_VERTEX_SHADER, riverVertexCode.c_str());
+        Shader fragmentShader(GL_FRAGMENT_SHADER, riverFragmentCode.c_str());
+        riverShader.attachShader(vertexShader);
+        riverShader.attachShader(fragmentShader);
+        riverShader.link();
+        riverMvpLoc = riverShader.getUniformLoc("mvp");
+        riverTimeLoc = riverShader.getUniformLoc("dtime");
+    }
+
     // Instanciation des éléments
     BasicShapeElements ground;
     ground.setData(groundVertices, sizeof(groundVertices), groundIndexes, sizeof(groundIndexes));
@@ -218,6 +234,15 @@ int main(int argc, char* argv[])
         // base mvp matrix
         glm::mat4 mvp = displayMatrix;
 
+        // display river
+        riverShader.use();
+        mvp = displayMatrix;
+        glUniform1f(riverTimeLoc, (float)w.getTick() / 1000.f);
+        glUniformMatrix4fv(riverMvpLoc, 1, GL_FALSE, &mvp[0][0]);
+        riverTexture.use();
+        river.draw(GL_TRIANGLES, 6);
+        riverTexture.unuse();
+
         // suzanne model matrix if third person
         modelShader.use();
         glm::mat4 model = glm::mat4(1.0f);
@@ -239,13 +264,6 @@ int main(int argc, char* argv[])
         groundTexture.use();
         ground.draw(GL_TRIANGLES, 6);
         groundTexture.unuse();
-
-        // display river
-        mvp = displayMatrix;
-        glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-        riverTexture.use();
-        river.draw(GL_TRIANGLES, 6);
-        riverTexture.unuse();
 
         // display objects groups
         // trees
