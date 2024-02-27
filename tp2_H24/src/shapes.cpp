@@ -6,7 +6,9 @@ BasicShapeArrays::BasicShapeArrays(const GLfloat* data, GLsizeiptr byteSize) {
 
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
     glBufferData(GL_ARRAY_BUFFER, byteSize, data, GL_STATIC_DRAW);
+    glBindVertexArray(0);
 }
 
 BasicShapeArrays::~BasicShapeArrays() {
@@ -21,11 +23,13 @@ void BasicShapeArrays::enableAttribute(GLuint index, GLint size, GLsizei stride,
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glEnableVertexAttribArray(index);
     glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)(offset * sizeof(GLfloat)));
+    glBindVertexArray(0);
 }
 
 void BasicShapeArrays::draw(GLenum mode, GLsizei count) {
     glBindVertexArray(m_vao);
     glDrawArrays(mode, 0, count);
+    glBindVertexArray(0);
 }
 
 
