@@ -6,6 +6,13 @@
 Model::Model(const char* path)
 {
 	// TODO: Initalisation du modèle et des attibuts de la classe
+	std::vector<GLfloat> vertexData;
+	std::vector<GLuint> indices;
+	loadObj(path, vertexData, indices);
+	m_shape.setData(vertexData.data(), vertexData.size(), indices.data(), indices.size());
+	m_shape.enableAttribute(0, 3, 3, 0);
+	m_shape.enableAttribute(1, 2, 5, 3);
+	m_count = indices.size();
 }
 
 void Model::loadObj(const char* path, std::vector<GLfloat>& vertexData, std::vector<GLuint>& indices)
@@ -35,4 +42,5 @@ void Model::loadObj(const char* path, std::vector<GLfloat>& vertexData, std::vec
 void Model::draw()
 {
 	// TODO: Dessine le modèle en triangle
+	m_shape.draw(GL_TRIANGLES, m_count);
 }
