@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
         mvpLocation = transform.getUniformLoc("mvp");
     }
 
-    // On céer un plan pour faire le sol
+    // On créer un plan pour faire le sol
 
     BasicShapeArrays ground(squareVertices, sizeof(squareVertices));
     ground.enableAttribute(0, 3, 0, 0);
