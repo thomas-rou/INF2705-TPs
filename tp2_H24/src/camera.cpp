@@ -13,11 +13,16 @@ glm::mat4 Camera::getFirstPersonViewMatrix()
 {
 	// Calcul et retour de la matrice de vue en première personne
 	// à partir des attributs de la classe
+
+	float yaw = glm::radians(m_orientation.x);
+
 	glm::mat4 view = glm::mat4(1.0f);
+
+	view = glm::rotate(view, glm::radians(m_orientation.x), glm::vec3(0.0f, 1.0f, 0.0f));
+	view = glm::rotate(view, glm::radians(m_orientation.y), glm::vec3(glm::cos(yaw), 0.0f, glm::sin(yaw)));
+
 	view = glm::translate(view, -m_position);
-	view = glm::rotate(view, m_orientation.x, glm::vec3(0.0f, abs(m_position.x), 0.0f));
-	view = glm::rotate(view, m_orientation.y, glm::vec3(abs(m_position.x), 0.0f, 0.0f));
-	
+
 	return view;
 }
 
@@ -25,17 +30,18 @@ glm::mat4 Camera::getFirstPersonViewMatrix()
  {
  	// TODO: Calcul et retour de la matrice de vue en troisième personne
  	// à partir des attributs de la classe
-	 float radius = 6.0;
-	 float yaw = m_orientation.y;
-	 float pitch = m_orientation.x + M_PI/2;
+	 float radius = 6.0f;
+	 float yaw = glm::radians(m_orientation.x);
+	 float pitch = glm::radians(m_orientation.y);
 	 glm::vec3 cameraPosition = glm::vec3(
-		 radius * cos(glm::radians(yaw)) * cos(glm::radians(pitch)), 
-		 radius * sin(glm::radians(pitch)), 
-		 radius * sin(glm::radians(yaw)) * cos(glm::radians(pitch))
+		 radius * glm::cos(pitch) * glm::sin(-yaw),
+		 radius * glm::sin(pitch),
+		 radius * glm::cos(pitch) * glm::cos(-yaw)
 	 );
 
-	 glm::mat4 view = glm::lookAt(cameraPosition, m_position, glm::vec3(0.0f, abs(m_position.x), 0.0f));
+	 cameraPosition += m_position;
+
+	 glm::mat4 view = glm::lookAt(cameraPosition, m_position, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	 return view;
  }
-
