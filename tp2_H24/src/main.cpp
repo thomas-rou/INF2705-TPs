@@ -15,6 +15,7 @@
 #include "camera.h"
 #include "model.h"
 #include "utils.h"
+#include "textures.h"
 
 
 const int GROUPS_ROWS_SIZE = 7;
@@ -57,26 +58,40 @@ int main(int argc, char* argv[])
         modelMvpLoc = modelShader.getUniformLoc("mvp");
     }
 
-    GLint modelColorLoc = modelShader.getUniformLoc("color");
-
     // Instanciation des éléments
     BasicShapeElements ground;
     ground.setData(groundVertices, sizeof(groundVertices), groundIndexes, sizeof(groundIndexes));
     ground.enableAttribute(0, 3, 5, 0);
+    ground.enableAttribute(1, 2, 5, 3);
 
     BasicShapeElements river;
     river.setData(riverVertices, sizeof(riverVertices), riverIndexes, sizeof(riverIndexes));
     river.enableAttribute(0, 3, 5, 0);
+    river.enableAttribute(1, 2, 5, 3);
 
     BasicShapeElements hud;
     hud.setData(hudVertices, sizeof(hudVertices), hudIndexes, sizeof(hudIndexes));
     hud.enableAttribute(0, 3, 5, 0);
+    hud.enableAttribute(1, 2, 5, 3);
 
     // Models
     Model suzanne("../models/suzanne.obj");
     Model tree("../models/tree.obj");
     Model rock("../models/rock.obj");
     Model mushroom("../models/mushroom.obj");
+
+    // Textures
+    Texture2D suzanneTexture("../models/suzanneTexture.png", GL_CLAMP_TO_BORDER);
+    Texture2D treeTexture("../models/treeTexture.png", GL_CLAMP_TO_BORDER);
+    Texture2D rockTexture("../models/rockTexture.png", GL_CLAMP_TO_BORDER);
+    Texture2D mushroomTexture("../models/mushroomTexture.png", GL_CLAMP_TO_BORDER);
+    Texture2D groundTexture("../textures/groundSeamless.jpg", GL_REPEAT);
+    Texture2D riverTexture("../textures/waterSeamless.jpg", GL_REPEAT);
+    Texture2D hudTexture("../textures/heart.png", GL_CLAMP_TO_BORDER);
+
+    // mipmap pour textures répétées
+    groundTexture.enableMipmap();
+    riverTexture.enableMipmap();
 
     // Groups
     glm::mat4 treeModel[GROUPS_TABLE_SIZE];
@@ -196,7 +211,11 @@ int main(int argc, char* argv[])
         }
         // Projection Matrix
         glm::mat4 proj = glm::perspective(glm::radians(70.0f), (float)w.getWidth()/(float)w.getHeight(), 0.1f, 200.0f);
+
+        // displayMatrix used for most objects in the scene
         glm::mat4 displayMatrix = proj * view;
+
+        // base mvp matrix
         glm::mat4 mvp = displayMatrix;
 
         // suzanne model matrix if third person
@@ -208,41 +227,48 @@ int main(int argc, char* argv[])
             model = glm::rotate(model, -glm::radians(ori.x) - float(M_PI), glm::vec3(0.0f, 1.0f, 0.0f));
             mvp = displayMatrix * model;
             glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-            glUniform3f(modelColorLoc, 1.0f, 0.0f, 0.0f);
+
+            suzanneTexture.use();
             suzanne.draw();
+            suzanneTexture.unuse();
         }
 
         // display ground
         mvp = displayMatrix;
         glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-        glUniform3f(modelColorLoc, 0.0f, 1.0f, 0.0f);
+        groundTexture.use();
         ground.draw(GL_TRIANGLES, 6);
+        groundTexture.unuse();
 
         // display river
         mvp = displayMatrix;
         glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-        glUniform3f(modelColorLoc, 0.2f, 0.2f, 1.0f);
+        riverTexture.use();
         river.draw(GL_TRIANGLES, 6);
+        riverTexture.unuse();
 
         // display objects groups
         // trees
         for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {
             mvp = displayMatrix * treeModel[i];
             glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-            glUniform3f(modelColorLoc, 0.5f, 0.35f, 0.05f);
+            treeTexture.use();
             tree.draw();
+            treeTexture.unuse();
 
             // rocks
             mvp = displayMatrix * rockModel[i];
             glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-            glUniform3f(modelColorLoc, 0.5f, 0.5f, 0.5f);
+            rockTexture.use();
             rock.draw();
+            rockTexture.unuse();
 
             // mushroom
             mvp = displayMatrix * mushroomModel[i];
             glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-            glUniform3f(modelColorLoc, 1.0f, 1.0f, 1.0f);
+            mushroomTexture.use();
             mushroom.draw();
+            mushroomTexture.use();
         }
 
         // hud
@@ -251,14 +277,15 @@ int main(int argc, char* argv[])
         proj = glm::mat4(1.0f);
         float scaleX = 50.0f;
         float scaleY = 50.0f;
-        model = glm::translate(model, glm::vec3(750.0f/4.0f, 750.0f/4.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(250.0f/4.0f, 250.0f/4.0f, 0.0f));
         model = glm::scale(model, glm::vec3(scaleX, scaleY, 0.0f));
         proj = glm::ortho(0.0f, float(w.getWidth()), 0.0f, float(w.getHeight()));
         mvp = proj * model;
 
         glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-        glUniform3f(modelColorLoc, 0.0f, 0.0f, 0.0f);
+        hudTexture.use();
         hud.draw(GL_TRIANGLES, 6);
+        hudTexture.unuse();
 
         glDepthFunc(GL_LESS);
 
