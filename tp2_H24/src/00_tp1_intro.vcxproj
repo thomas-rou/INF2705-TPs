@@ -177,6 +177,8 @@
     <None Include="packages.config" />
     <None Include="shaders\model.fs.glsl" />
     <None Include="shaders\model.vs.glsl" />
+    <None Include="shaders\water.fs.glsl" />
+    <None Include="shaders\water.vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
