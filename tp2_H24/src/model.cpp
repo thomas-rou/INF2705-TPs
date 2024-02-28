@@ -5,7 +5,7 @@
 
 Model::Model(const char* path)
 {
-	// TODO: Initalisation du modèle et des attibuts de la classe
+	// Initalisation du modèle et des attibuts de la classe
 	std::vector<GLfloat> vertexData;
 	std::vector<GLuint> indices;
 	loadObj(path, vertexData, indices);
@@ -31,7 +31,7 @@ void Model::loadObj(const char* path, std::vector<GLfloat>& vertexData, std::vec
 		vertexData.push_back(p.X);
 		vertexData.push_back(p.Y);
 		vertexData.push_back(p.Z);
-		// TODO: Décommenter lors de la partie 2
+		// Décommenter lors de la partie 2
 		objl::Vector2 t = loader.LoadedVertices[i].TextureCoordinate;
 		vertexData.push_back(t.X);
 		vertexData.push_back(t.Y);
@@ -41,6 +41,6 @@ void Model::loadObj(const char* path, std::vector<GLfloat>& vertexData, std::vec
 
 void Model::draw()
 {
-	// TODO: Dessine le modèle en triangle
+	// Dessine le modèle en triangle
 	m_shape.draw(GL_TRIANGLES, m_count);
 }
