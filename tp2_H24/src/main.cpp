@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 
     printGLInfo();
 
-    // Instanciation des shaders
+    // Instantiate shaders
     ShaderProgram modelShader;
     GLint modelMvpLoc;
     {
@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
         skyboxMvpLoc = skyboxShader.getUniformLoc("mvp");
     }
 
-    // Instanciation des éléments
+    // Instantiate elements
     BasicShapeElements ground;
     ground.setData(groundVertices, sizeof(groundVertices), groundIndexes, sizeof(groundIndexes));
     ground.enableAttribute(0, 3, 5, 0);
@@ -125,71 +125,77 @@ int main(int argc, char* argv[])
 
     TextureCubeMap skyboxTexture(skyboxPathsindexes);
 
-    // mipmap pour textures répétées
+    // Activate mipmap for repeated textures
     groundTexture.enableMipmap();
     riverTexture.enableMipmap();
 
-    // Groupes
+    // Groups
     glm::mat4 treeModel[GROUPS_TABLE_SIZE];
     glm::mat4 rockModel[GROUPS_TABLE_SIZE];
     glm::mat4 mushroomModel[GROUPS_TABLE_SIZE];
     glm::vec3 groupsRepartitionMatrix[GROUPS_TABLE_SIZE];
 
-    // group instances
+    // Group instances
     {
         glm::mat4 groupsModel[GROUPS_TABLE_SIZE];
         for (int i = 0; i < GROUPS_TABLE_SIZE; ++i) {
-            // random translation transformation for each group
+            // Random translation transformation for each group
             float randPosX, randPosZ;
             getGroupRandomPos(i, GROUPS_ROWS_SIZE, randPosX, randPosZ);
             groupsRepartitionMatrix[i] = glm::vec3(randPosX, -1.0f, randPosZ);
 
-            // random scale [0.7; 1.3]
+            // Random scale [0.7; 1.3]
             float groupScale = float(rand01() * 0.6f + 0.7f);
 
-            // random rotation [0; 2π]
+            // Random rotation [0; 2π]
             float groupRotation = float(rand01() * float(2*M_PI));
 
-            // define group model (applied to all objects in the group)
+            // Define group model for all objects in the group
             glm::mat4 groupModel = glm::mat4(1.0f);
             groupModel = glm::translate(groupModel, glm::vec3(randPosX, -1.0f, randPosZ)); // -1.0 in z axis for the ground
             groupModel = glm::scale(groupModel, glm::vec3(groupScale));
-            groupModel = glm::rotate(groupModel, groupRotation, glm::vec3(0., 1., 0.));
+            groupModel = glm::rotate(groupModel, groupRotation, glm::vec3(0.0f, 1.0f, 0.0f));
             groupsModel[i] = groupModel;
 
-            // Tree model
+            // Tree model specific transformation
             float treeScale = float(rand01() * 0.6f + 0.7f);
             groupModel = glm::scale(groupsModel[i], glm::vec3(treeScale));
             treeModel[i] = groupModel;
 
-            // Rock Model
+            // Rock model specific transformation
             float rockRotation = float(rand01() * float(2 * M_PI));
             float rockRadius = float(rand01() + 1.0f);
             groupModel = glm::rotate(groupsModel[i], rockRotation, glm::vec3(0.0f, 1.0f, 0.0f));
             groupModel = glm::translate(groupModel, glm::vec3(0.0f, 0.2f, rockRadius));
-            groupModel = glm::scale(groupModel, glm::vec3(0.3));
+            groupModel = glm::scale(groupModel, glm::vec3(0.3f));
             rockModel[i] = groupModel;
 
-            // Mushroom Model
-            groupModel = glm::translate(treeModel[i], glm::vec3(0.3, 0.0, 0.3));
-            groupModel = glm::scale(groupModel, glm::vec3(0.05));
+            // Mushroom model specific transformation
+            groupModel = glm::translate(treeModel[i], glm::vec3(0.3f, 0.0f, 0.3f));
+            groupModel = glm::scale(groupModel, glm::vec3(0.05f));
             mushroomModel[i] = groupModel;
         }
     }
 
-    // Instanciation camera
+    // Instantiate camera
     glm::vec3 pos(0, 0, 0);
     glm::vec2 ori(0, 0);
     Camera camera(pos, ori);
 
-    // définition de var pour orientation de la caméra
+    // Camera orientation and movement variables
     int mouseX, mouseY;
     bool isthirdPerson = false;
+    float posSpeed = 0.1f;
+    float oriSpeed = 0.05f;
+
+    // Hud scaling and translation variables
+    float hudScaleX = 50.0f;
+    float hudScaleY = 50.0f;
+    float hudTranslationRatio = 6.0f / 4.0f;
 
     // Enable face culling
     glCullFace(GL_FRONT);
     glFrontFace(GL_CW);
-    //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     bool isRunning = true;
     while (isRunning)
@@ -201,10 +207,8 @@ int main(int argc, char* argv[])
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Changement de la position de la caméra
-        float theta = glm::radians(ori.x);
-        float posSpeed = 0.1f;
-        float oriSpeed = 0.05f;
+        // Camera movement
+        float theta = glm::radians(ori.x);        
         glm::vec3 front(glm::sin(theta), 0., -glm::cos(theta));
         glm::vec3 right = glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f));
         if (w.getKeyHold(Window::Key::W)){
@@ -220,12 +224,12 @@ int main(int argc, char* argv[])
             pos += posSpeed * right;
         }
 
-        // Changement de l'orientation de la caméra
+        // Camera orientation
         w.getMouseMotion(mouseX, mouseY);
         ori.x += mouseX * oriSpeed;
         ori.y += mouseY * oriSpeed;
         
-        // view Matrix and suzanne model if thirdPerson
+        // Camera view matrix change based on mouse scroll direction
         glm::mat4 view = glm::mat4(1.0f);
         switch (w.getMouseScrollDirection()) {
             case 1:
@@ -245,26 +249,32 @@ int main(int argc, char* argv[])
                 }
                 break;
         }
-        // Projection Matrix
-        glm::mat4 proj = glm::perspective(glm::radians(70.0f), (float)w.getWidth()/(float)w.getHeight(), 0.1f, 200.0f);
 
-        // displayMatrix used for most objects in the scene
+        // Projection matrix for most scene objects
+        glm::mat4 proj = glm::perspective(glm::radians(70.0f), (float)w.getWidth()/(float)w.getHeight(), 0.1f, 200.0f);
+        
+        // Display matrix for most scene objects
         glm::mat4 displayMatrix = proj * view;
 
-        // base mvp matrix
+        // Base mvp matrix
         glm::mat4 mvp = displayMatrix;
 
-        // display river
+        // Display river
         riverShader.use();
-        mvp = displayMatrix;
         glUniform1f(riverTimeLoc, (float)w.getTick() / 1000.f);
         glUniformMatrix4fv(riverMvpLoc, 1, GL_FALSE, &mvp[0][0]);
         riverTexture.use();
         river.draw(GL_TRIANGLES, 6);
         riverTexture.unuse();
 
-        // suzanne model if in third person
         modelShader.use();
+        // Display ground
+        glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
+        groundTexture.use();
+        ground.draw(GL_TRIANGLES, 6);
+        groundTexture.unuse();
+
+        // Display suzanne model if in third person view
         glm::mat4 model = glm::mat4(1.0f);
         if (isthirdPerson) {
             model = glm::translate(model, pos + glm::vec3(0.0f, -1.0f, 0.0f));
@@ -278,15 +288,8 @@ int main(int argc, char* argv[])
             suzanneTexture.unuse();
         }
 
-        // display ground
-        mvp = displayMatrix;
-        glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
-        groundTexture.use();
-        ground.draw(GL_TRIANGLES, 6);
-        groundTexture.unuse();
-
-        // display objects groups
-        // display trees
+        // Display objects groups
+        // Display trees
         treeTexture.use();
         for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {
             mvp = displayMatrix * treeModel[i];
@@ -295,40 +298,36 @@ int main(int argc, char* argv[])
         }
         treeTexture.unuse();
 
+        // Display rocks
         rockTexture.use();
-        for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {
-            // display rocks
+        for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {            
             mvp = displayMatrix * rockModel[i];
             glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);            
             rock.draw();            
         }
         rockTexture.unuse();
 
+        // Display mushroom
         mushroomTexture.use();
-        for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {
-            // display mushroom
+        for (int i = 0; i < GROUPS_TABLE_SIZE; i++) {            
             mvp = displayMatrix * mushroomModel[i];
             glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);            
             mushroom.draw();            
         }
         mushroomTexture.unuse();
 
-        // display hud
+        // Display hud
         glDepthFunc(GL_ALWAYS);
-        model = glm::mat4(1.0f);
-        float scaleX = 50.0f;
-        float scaleY = 50.0f;
-        model = glm::translate(model, glm::vec3(scaleX * 6.0f / 4.0f, scaleY * 6.0f / 4.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0f));
+        model = glm::translate(glm::mat4(1.0f), glm::vec3(hudScaleX * hudTranslationRatio, hudScaleY * hudTranslationRatio, 0.0f));
+        model = glm::scale(model, glm::vec3(hudScaleX, hudScaleY, 1.0f));
         glm::mat4 hudProj = glm::ortho(0.0f, float(w.getWidth()), 0.0f, float(w.getHeight()));
         mvp = hudProj * model;
-
         glUniformMatrix4fv(modelMvpLoc, 1, GL_FALSE, &mvp[0][0]);
         hudTexture.use();
         hud.draw(GL_TRIANGLES, 6);
         hudTexture.unuse();
 
-        // display skybox
+        // Display skybox
         glDepthFunc(GL_LEQUAL);
         skyboxShader.use();
         mvp = proj * glm::mat4(glm::mat3(view));
