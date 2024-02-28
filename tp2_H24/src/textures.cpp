@@ -14,7 +14,7 @@ Texture2D::Texture2D(const char* path, GLenum wrapMode)
     if (data == NULL)
         std::cout << "Error loading texture \"" << path << "\": " << stbi_failure_reason() << std::endl;
 
-    // TODO: Chargement	de la texture.
+    // Chargement	de la texture.
     int colorFormat = (nChannels == 3) ? GL_RGB : GL_RGBA;
 
     glGenTextures(1, &m_id);
@@ -29,6 +29,7 @@ Texture2D::Texture2D(const char* path, GLenum wrapMode)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+    // Binding
     glBindTexture(GL_TEXTURE_2D, 0);
 
     stbi_image_free(data);
@@ -36,18 +37,18 @@ Texture2D::Texture2D(const char* path, GLenum wrapMode)
 
 Texture2D::~Texture2D()
 {
-    // TODO: Supprimer la mémoire de l'objet
+    // Supprimer la mémoire de l'objet
     glBindTexture(GL_TEXTURE_2D, 0);
     glDeleteTextures(1, &m_id);
 }
 
 void Texture2D::enableMipmap()
 {
-    // TODO: Activer le mipmap. N'oublier pas de modifier les paramètres de texture.
+    // Activer le mipmap. N'oublier pas de modifier les paramètres de texture.
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_id);
 
-    // update sampling
+    // Update sampling
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -55,14 +56,14 @@ void Texture2D::enableMipmap()
 
 void Texture2D::use()
 {
-    // TODO: Utilise la texture
+    // Utilise la texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_id);
 }
 
 void Texture2D::unuse()
 {
-    // TODO: N'utilise aucune texture
+    // N'utilise aucune texture
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -83,7 +84,7 @@ TextureCubeMap::TextureCubeMap(const char** pathes)
     }
 
 
-	// TODO: Chargement des textures du cubemap.
+	// Chargement des textures du cubemap.
     glGenTextures(1, &m_id);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_id);
 
@@ -104,14 +105,14 @@ TextureCubeMap::TextureCubeMap(const char** pathes)
 
 TextureCubeMap::~TextureCubeMap()
 {
-    // TODO: Supprimer la mémoire de l'objet
+    // Supprimer la mémoire de l'objet
     glBindTexture(GL_TEXTURE_2D, 0);
     glDeleteTextures(1, &m_id);
 }
 
 void TextureCubeMap::use()
 {
-    // TODO: Utilise la texture du cubemap
+    // Utilise la texture du cubemap
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_id);
 }
