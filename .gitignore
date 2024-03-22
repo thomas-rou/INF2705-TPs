@@ -34,3 +34,7 @@
 # Ignore Visual Studio temporary files, build results, and packages
 .vs/
 packages/
+*.tlog
+*.log
+*.idb
+*.pdb
