@@ -9,5 +9,5 @@ void main()
 {
     vec3 normal_unit = normalize(normal);
     vec3 pos = position + 0.1 * normal_unit;
-    gl_position = mvp * vec4(pos, 1.0);
+    gl_Position = mvp * vec4(pos, 1.0);
 }
