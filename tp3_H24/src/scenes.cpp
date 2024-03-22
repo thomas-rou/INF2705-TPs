@@ -129,7 +129,7 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
         m_res.suzanne.draw();
     }
 
-    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
     for (size_t i = 0; i < N_ENEMY_MONKEE; ++i) {
         glStencilMask(1 << (i + N_ALLY_MONKEE));
         glUniformMatrix4fv(m_res.mvpLocationModel, 1, GL_FALSE, &enemyMvp[i][0][0]);
@@ -148,6 +148,7 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
 	// TODO: Dessin du mur vitrée
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthMask(GL_FALSE);
     m_res.model.use();
     m_res.glassTexture.use();
 
@@ -156,6 +157,7 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
     glUniformMatrix4fv(m_res.mvpLocationModel, 1, GL_FALSE, &mvp[0][0]);
     m_res.glass.draw();
     glEnable(GL_CULL_FACE);
+    glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 
     // TODO: Dessiner les halos  
@@ -169,15 +171,17 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
         glUniformMatrix4fv(m_res.mvpLocationSimple, 1, GL_FALSE, &allyMvp[i][0][0]);
         glStencilFunc(GL_EQUAL, 0, 1 << i);
         m_res.suzanne.draw();
+    
     }
-    glDepthFunc(GL_LESS);
 
+    glDepthFunc(GL_LESS);
     glUniform3f(m_res.colorLocationSimple, 1.0f, 0.0f, 0.0f);
     for (size_t i = 0; i < N_ENEMY_MONKEE; ++i) {
         glUniformMatrix4fv(m_res.mvpLocationSimple, 1, GL_FALSE, &enemyMvp[i][0][0]);
         glStencilFunc(GL_EQUAL, 0, 1 << (i + N_ALLY_MONKEE));
         m_res.suzanne.draw();
     }
+    
     glDisable(GL_STENCIL_TEST);
 
 }
