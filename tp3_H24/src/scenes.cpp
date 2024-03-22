@@ -159,13 +159,13 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
     glDisable(GL_BLEND);
 
     // TODO: Dessiner les halos  
-    /*m_res.simple.use();
+    m_res.simple.use();
     glEnable(GL_STENCIL_TEST);
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
     glStencilMask(0xFF);
     glDepthFunc(GL_ALWAYS);
     glUniform3f(m_res.colorLocationSimple, 0.0f, 1.0f, 1.0f);
-    for (size_t i = 0; i < N_ALLY_MONKEE; ++i) {
+    for (size_t i = 0; i < N_ALLY_MONKEE; i++) {
         glUniformMatrix4fv(m_res.mvpLocationSimple, 1, GL_FALSE, &allyMvp[i][0][0]);
         glStencilFunc(GL_EQUAL, 0, 1 << i);
         m_res.suzanne.draw();
@@ -178,7 +178,7 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
         glStencilFunc(GL_EQUAL, 0, 1 << (i + N_ALLY_MONKEE));
         m_res.suzanne.draw();
     }
-    glDisable(GL_STENCIL_TEST);*/
+    glDisable(GL_STENCIL_TEST);
 
 }
 
