@@ -48,7 +48,17 @@ layout (std140) uniform LightingBlock
     float spotOpeningAngle;
 };
 
-void main()
-{
-    // TODO
+void main() {
+	gl_Position = mvp * vec4(position, 1.0);
+
+	attribOut.obsPos = -position;
+	attribOut.texCoords = texCoords;
+	attribOut.normal = normalMatrix * normal;
+
+	vec3 pos = (modelView * vec4(position, 1.0)).xyz;
+
+	for (int i = 0; i < 3; ++i) {
+		attribOut.lightDir[i] = (view * vec4(lights[i].position, 1.0)).xyz - pos;
+		attribOut.spotDir[i] = mat3(view) * -lights[i].spotDirection;
+	}
 }

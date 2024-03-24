@@ -11,7 +11,8 @@ out ATTRIB_OUT
 
 uniform mat4 mvp;
 
-void main()
-{
-    // TODO
+void main() {
+	gl_Position = mvp * vec4(position, 1.0);
+	attribOut.position = position;
+	attribOut.texCoords = texCoords;
 }
