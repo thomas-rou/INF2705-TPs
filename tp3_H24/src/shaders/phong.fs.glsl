@@ -69,7 +69,7 @@ float computeSpot(in vec3 spotDir, in vec3 lightDir, in vec3 normal) {
 
 vec3 computeLight(in int lightIndex, in vec3 normal, in vec3 lightDir, in vec3 obsPos) {
 	vec3 color = vec3(0.0);
-	vec3 texDiffuse = useTexture ? texture(diffuseSampler, attribIn.texCoords).rgb : vec3(1.0);
+	vec3 texDiffuse = texture(diffuseSampler, attribIn.texCoords).rgb;
 
 	color += mat.ambient * lights[lightIndex].ambient * texDiffuse;
 
@@ -89,7 +89,7 @@ vec3 computeLight(in int lightIndex, in vec3 normal, in vec3 lightDir, in vec3 o
 			spec = dot(reflectDir, obsPos);
 		}
 		if (spec > 0) {
-			float texSpec = useTexture ? texture(specularSampler, attribIn.texCoords).r : 1.0;
+			float texSpec = texture(specularSampler, attribIn.texCoords).r;
 			spec = pow(spec, mat.shininess);
 			color += spot * mat.specular * lights[lightIndex].specular * spec * texSpec;
 		}
@@ -100,11 +100,9 @@ vec3 computeLight(in int lightIndex, in vec3 normal, in vec3 lightDir, in vec3 o
 void main() {
 	vec3 color = mat.emission;
 	vec3 texDiffuse = vec3(1.0);
-	if (useTexture) {
-		vec4 tex = texture(diffuseSampler, attribIn.texCoords);
-		if (tex.a < 0.3) discard;
-		texDiffuse = tex.rgb;
-	}
+	vec4 tex = texture(diffuseSampler, attribIn.texCoords);
+	if (tex.a < 0.3) discard;
+	texDiffuse = tex.rgb;
 	color += mat.ambient * lightModelAmbient * texDiffuse;
 
 	vec3 normal = normalize(attribIn.normal);
