@@ -37,3 +37,5 @@ packages/
 *.log
 *.idb
 *.pdb
+*/src/Debug
+*/src/Release
