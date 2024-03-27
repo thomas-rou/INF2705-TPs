@@ -106,7 +106,7 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
     m_res.ground.draw(GL_TRIANGLES, 6);
 
 
-    // TODO: Précalcul des matrices mvp des singes,
+    // Précalcul des matrices mvp des singes,
 	// utilisable pour les modèles et halos.
     glm::mat4 allyMvp[N_ALLY_MONKEE];
     for (int i = 0; i < N_ALLY_MONKEE; i++) {
@@ -119,7 +119,7 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
     }
 	
 	m_res.suzanneTexture.use();
-    // TODO: Remplir le stencil en dessinant les singes
+    // Remplir le stencil en dessinant les singes
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_ALWAYS, 0xFF, 0xFF);
     glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
@@ -129,7 +129,7 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
         m_res.suzanne.draw();
     }
 
-    glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     for (size_t i = 0; i < N_ENEMY_MONKEE; ++i) {
         glStencilMask(1 << (i + N_ALLY_MONKEE));
         glUniformMatrix4fv(m_res.mvpLocationModel, 1, GL_FALSE, &enemyMvp[i][0][0]);
@@ -145,7 +145,7 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
     m_res.model.use();
     m_res.glassTexture.use();
     
-	// TODO: Dessin du mur vitrée
+	// Dessin du mur vitrée
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDepthMask(GL_FALSE);
@@ -160,27 +160,29 @@ void StencilTestScene::render(glm::mat4& view, glm::mat4& projPersp)
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 
-    // TODO: Dessiner les halos  
+    // Dessiner les halos  
     m_res.simple.use();
     glEnable(GL_STENCIL_TEST);
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
     glStencilMask(0xFF);
-    glDepthFunc(GL_ALWAYS);
-    glUniform3f(m_res.colorLocationSimple, 0.0f, 1.0f, 1.0f);
-    for (size_t i = 0; i < N_ALLY_MONKEE; i++) {
-        glUniformMatrix4fv(m_res.mvpLocationSimple, 1, GL_FALSE, &allyMvp[i][0][0]);
-        glStencilFunc(GL_EQUAL, 0, 1 << i);
-        m_res.suzanne.draw();
-    
-    }
 
-    glDepthFunc(GL_LESS);
     glUniform3f(m_res.colorLocationSimple, 1.0f, 0.0f, 0.0f);
     for (size_t i = 0; i < N_ENEMY_MONKEE; ++i) {
         glUniformMatrix4fv(m_res.mvpLocationSimple, 1, GL_FALSE, &enemyMvp[i][0][0]);
         glStencilFunc(GL_EQUAL, 0, 1 << (i + N_ALLY_MONKEE));
         m_res.suzanne.draw();
     }
+
+    glDepthFunc(GL_ALWAYS);
+    glUniform3f(m_res.colorLocationSimple, 0.0f, 1.0f, 1.0f);
+    for (size_t i = 0; i < N_ALLY_MONKEE; i++) {
+        glUniformMatrix4fv(m_res.mvpLocationSimple, 1, GL_FALSE, &allyMvp[i][0][0]);
+        glStencilFunc(GL_EQUAL, 0, 1 << i);
+        m_res.suzanne.draw();
+
+    }
+
+    glDepthFunc(GL_LESS);
     
     glDisable(GL_STENCIL_TEST);
 
