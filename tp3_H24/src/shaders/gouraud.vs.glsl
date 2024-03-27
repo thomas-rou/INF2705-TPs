@@ -84,11 +84,9 @@ vec3 computeLightModel(in int lightIndex, in vec3 normal, in vec3 lightDir, in v
 
 		float spec = 0.0;
 		if (useBlinn) {
-			vec3 halfVec = normalize(lightDir + obsPos);
-			spec = dot(halfVec, normal);
+			spec = dot(normalize(lightDir + obsPos), normal);
 		} else {
-			vec3 reflectDir = reflect(-lightDir, normal);
-			spec = dot(reflectDir, obsPos);
+			spec = dot(reflect(-lightDir, normal), obsPos);
 		}
 
 		if (spec > 0) {
