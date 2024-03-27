@@ -54,15 +54,15 @@ float computeSpotlight(in vec3 spotDir, in vec3 lightDir, in vec3 normal) {
 		else
 			return 0.0;
 	} else {
-		float cos_inner = cosDelta;
-		float cos_outer = pow(cosDelta, 1.01 + spotExponent / 2.0);
+		float cosInner = cosDelta;
+		float cosOuter = pow(cosDelta, 1.01 + spotExponent / 2.0);
 
-		if (cosGamma > cos_inner)
+		if (cosGamma > cosInner)
 			return 1.0;
-		else if (cosGamma < cos_outer)
+		else if (cosGamma < cosOuter)
 			return 0.0;
 		else
-			return (cosGamma - cos_outer) / (cos_inner - cos_outer);
+			return (cosGamma - cosOuter) / (cosInner - cosOuter);
 	}
 	return 0.0;
 }
@@ -75,9 +75,7 @@ vec3 computeLightModel(in int lightIndex, in vec3 normal, in vec3 lightDir, in v
 
 	float LdotN = dot(lightDir, normal);
 	if (LdotN > 0.0) {
-		float	spot = useSpotlight ?
-			computeSpotlight(attribIn.spotDir[lightIndex], lightDir, normal) :
-			1.0f;
+		float spot = useSpotlight ? computeSpotlight(attribIn.spotDir[lightIndex], lightDir, normal) : 1.0f;
 		color += spot * mat.diffuse * lights[lightIndex].diffuse * LdotN * texDiffuse;
 
 		float spec = 0.0;
