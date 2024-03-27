@@ -44,30 +44,30 @@ uniform sampler2D specularSampler;
 
 out vec4 FragColor;
 
-float computeSpot(in vec3 spotDir, in vec3 lightDir, in vec3 normal) {
-	float cos_delta = cos(radians(spotOpeningAngle));
-	float cos_gamma = dot(normalize(spotDir), lightDir);
+float computeSpotlight(in vec3 spotDir, in vec3 lightDir, in vec3 normal) {
+	float cosDelta = cos(radians(spotOpeningAngle));
+	float cosGamma = dot(normalize(spotDir), lightDir);
 
 	if (!useDirect3D) {
-		if (cos_gamma > cos_delta)
-			return pow(cos_gamma, spotExponent);
+		if (cosGamma > cosDelta)
+			return pow(cosGamma, spotExponent);
 		else
 			return 0.0;
 	} else {
-		float cos_inner = cos_delta;
-		float cos_outer = pow(cos_delta, 1.01 + spotExponent / 2.0);
+		float cos_inner = cosDelta;
+		float cos_outer = pow(cosDelta, 1.01 + spotExponent / 2.0);
 
-		if (cos_gamma > cos_inner)
+		if (cosGamma > cos_inner)
 			return 1.0;
-		else if (cos_gamma < cos_outer)
+		else if (cosGamma < cos_outer)
 			return 0.0;
 		else
-			return (cos_gamma - cos_outer) / (cos_inner - cos_outer);
+			return (cosGamma - cos_outer) / (cos_inner - cos_outer);
 	}
 	return 0.0;
 }
 
-vec3 computeLight(in int lightIndex, in vec3 normal, in vec3 lightDir, in vec3 obsPos) {
+vec3 computeLightModel(in int lightIndex, in vec3 normal, in vec3 lightDir, in vec3 obsPos) {
 	vec3 color = vec3(0.0);
 	vec3 texDiffuse = texture(diffuseSampler, attribIn.texCoords).rgb;
 
@@ -76,7 +76,7 @@ vec3 computeLight(in int lightIndex, in vec3 normal, in vec3 lightDir, in vec3 o
 	float LdotN = dot(lightDir, normal);
 	if (LdotN > 0.0) {
 		float	spot = useSpotlight ?
-			computeSpot(attribIn.spotDir[lightIndex], lightDir, normal) :
+			computeSpotlight(attribIn.spotDir[lightIndex], lightDir, normal) :
 			1.0f;
 		color += spot * mat.diffuse * lights[lightIndex].diffuse * LdotN * texDiffuse;
 
@@ -110,7 +110,7 @@ void main() {
 
 	for (int i = 0; i < 3; ++i) {
 		vec3 lightDir = normalize(attribIn.lightDir[i]);
-		color += computeLight(i, normal, lightDir, obsPos);
+		color += computeLightModel(i, normal, lightDir, obsPos);
 	}
 
 	FragColor = clamp(vec4(color, 1.0), 0.0, 1.0);
