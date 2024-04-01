@@ -1,40 +1,39 @@
 #include "shapes.h"
 
-BasicShapeArrays::BasicShapeArrays(const GLfloat* data, GLsizeiptr byteSize)
-{
+BasicShapeArrays::BasicShapeArrays(const GLfloat* data, GLsizeiptr byteSize) {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
 
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
     glBufferData(GL_ARRAY_BUFFER, byteSize, data, GL_STATIC_DRAW);
+    glBindVertexArray(0);
 }
 
-BasicShapeArrays::~BasicShapeArrays()
-{
+BasicShapeArrays::~BasicShapeArrays() {
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_vbo);
     glDeleteVertexArrays(1, &m_vao);
 }
 
-void BasicShapeArrays::enableAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset)
-{
+void BasicShapeArrays::enableAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset) {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glEnableVertexAttribArray(index);
     glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)(offset * sizeof(GLfloat)));
+    glBindVertexArray(0);
 }
 
-void BasicShapeArrays::draw(GLenum mode, GLsizei count)
-{
+void BasicShapeArrays::draw(GLenum mode, GLsizei count) {
     glBindVertexArray(m_vao);
     glDrawArrays(mode, 0, count);
+    glBindVertexArray(0);
 }
 
 
-BasicShapeMultipleArrays::BasicShapeMultipleArrays(const GLfloat* pos, GLsizeiptr posByteSize, const GLfloat* color, GLsizeiptr colorByteSize)
-{
+BasicShapeMultipleArrays::BasicShapeMultipleArrays(const GLfloat* pos, GLsizeiptr posByteSize, const GLfloat* color, GLsizeiptr colorByteSize) {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
 
@@ -47,8 +46,7 @@ BasicShapeMultipleArrays::BasicShapeMultipleArrays(const GLfloat* pos, GLsizeipt
     glBufferData(GL_ARRAY_BUFFER, colorByteSize, color, GL_STATIC_DRAW);
 }
 
-BasicShapeMultipleArrays::~BasicShapeMultipleArrays()
-{
+BasicShapeMultipleArrays::~BasicShapeMultipleArrays() {
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_posVbo);
@@ -56,45 +54,39 @@ BasicShapeMultipleArrays::~BasicShapeMultipleArrays()
     glDeleteVertexArrays(1, &m_vao);
 }
 
-void BasicShapeMultipleArrays::enablePosAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset)
-{
+void BasicShapeMultipleArrays::enablePosAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset) {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_posVbo);
     glEnableVertexAttribArray(index);
     glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)(offset * sizeof(GLfloat)));
 }
 
-void BasicShapeMultipleArrays::enableColorAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset)
-{
+void BasicShapeMultipleArrays::enableColorAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset) {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_colorVbo);
     glEnableVertexAttribArray(index);
     glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)(offset * sizeof(GLfloat)));
 }
 
-void BasicShapeMultipleArrays::updateColorData(const GLfloat* color, GLsizeiptr colorByteSize)
-{
+void BasicShapeMultipleArrays::updateColorData(const GLfloat* color, GLsizeiptr colorByteSize) {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_colorVbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, colorByteSize, color);
 }
 
-GLfloat* BasicShapeMultipleArrays::mapPosData()
-{
+GLfloat* BasicShapeMultipleArrays::mapPosData() {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_posVbo);
     return (GLfloat*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 }
 
-void BasicShapeMultipleArrays::unmapPosData()
-{
+void BasicShapeMultipleArrays::unmapPosData() {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_posVbo);
     glUnmapBuffer(GL_ARRAY_BUFFER);
 }
 
-void BasicShapeMultipleArrays::draw(GLenum mode, GLsizei count)
-{
+void BasicShapeMultipleArrays::draw(GLenum mode, GLsizei count) {
     glBindVertexArray(m_vao);
     glDrawArrays(mode, 0, count);
 }
@@ -107,52 +99,40 @@ BasicShapeElements::BasicShapeElements()
     glGenBuffers(1, &m_ebo);
 }
 
-BasicShapeElements::BasicShapeElements(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize)
-{
-    glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
-
-    glGenBuffers(1, &m_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, byteSize, data, GL_STATIC_DRAW);
-
-    glGenBuffers(1, &m_ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexesByteSize, indexes, GL_STATIC_DRAW);
-}
-
-BasicShapeElements::~BasicShapeElements()
-{
+BasicShapeElements::~BasicShapeElements() {
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     glDeleteBuffers(1, &m_vbo);
     glDeleteBuffers(1, &m_ebo);
     glDeleteVertexArrays(1, &m_vao);
 }
 
-void BasicShapeElements::setData(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize)
-{
+void BasicShapeElements::setData(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize) {
     glBindVertexArray(m_vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, byteSize, data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, byteSize * sizeof(GLfloat), data, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexesByteSize, indexes, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexesByteSize * sizeof(GLuint), indexes, GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
 }
 
-
-void BasicShapeElements::enableAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset)
-{
+void BasicShapeElements::enableAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset) {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glEnableVertexAttribArray(index);
+
+    glEnableVertexArrayAttrib(m_vao, index);
     glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, stride * sizeof(GLfloat), (GLvoid*)(offset * sizeof(GLfloat)));
+
+    glBindVertexArray(0);
 }
 
-void BasicShapeElements::draw(GLenum mode, GLsizei count)
-{
+void BasicShapeElements::draw(GLenum mode, GLsizei count) {
     glBindVertexArray(m_vao);
     glDrawElements(mode, count, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 }

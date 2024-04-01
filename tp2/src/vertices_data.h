@@ -3,17 +3,6 @@
 
 // Merge avec le fichier du tp1
 
-const GLfloat squareVertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-    -0.5f,  0.5f, 0.0f,
-
-     0.5f, -0.5f, 0.0f,
-     0.5f,  0.5f, 0.0f,
-    -0.5f,  0.5f, 0.0f
-};
-
-
 const GLfloat cubeVertices[] = {
     // +z
     -0.5f, -0.5f,  0.5f, 1.0f, 0.0f, 0.0f,
@@ -67,6 +56,42 @@ const GLuint cubeIndexes[] = {
     21, 23, 22,
 };
 
+const GLfloat groundVertices[] = {
+	-30.0f, -1.0f, -30.0f, 0.0f, 0.0f,
+	-30.0f, -1.0f,  30.0f, 0.0f, 20.0f,
+	 30.0f, -1.0f, -30.0f, 20.0f, 0.0f,
+	 30.0f, -1.0f,  30.0f, 20.0f, 20.0f,
+};
+
+const GLuint groundIndexes[] = {
+	0, 1, 2,
+	1, 3, 2,
+};
+
+const GLfloat riverVertices[] = {
+	-30.0f, -1.0f, -50.0f, 0.0f, 0.0f,
+	-30.0f, -1.0f, -30.0f, 0.0f, 2.0f,
+	 30.0f, -1.0f, -50.0f, 5.0f, 0.0f,
+	 30.0f, -1.0f, -30.0f, 5.0f, 2.0f,
+};
+
+const GLuint riverIndexes[] = {
+	0, 1, 2,
+	1, 3, 2,
+};
+
+const GLfloat hudVertices[] = {
+	-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+	 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+	-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+	 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+};
+
+const GLuint hudIndexes[] = {
+	0, 1, 2,
+	1, 3, 2,
+};
+
 const GLfloat skyboxVertices[] = {
 	-1.0f,  1.0f, -1.0f,
 	-1.0f, -1.0f, -1.0f,
@@ -111,9 +136,13 @@ const GLfloat skyboxVertices[] = {
 	 1.0f, -1.0f,  1.0f
 };
 
-const GLuint indexes[] = {
-     0,  1,  2,
-     1,  3,  2,
+const char* skyboxPathsindexes[] = {
+	"../textures/skybox/Daylight Box_Right.bmp",
+	"../textures/skybox/Daylight Box_Left.bmp",
+	"../textures/skybox/Daylight Box_Top.bmp",
+	"../textures/skybox/Daylight Box_Bottom.bmp",
+	"../textures/skybox/Daylight Box_Front.bmp",
+	"../textures/skybox/Daylight Box_Back.bmp",
 };
 
 #endif // VERTICES_DATA_H

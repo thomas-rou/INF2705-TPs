@@ -1,2 +1,0 @@
-C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\INF2705-TPs\tp2_H24\src\Debug\glew32.dll
-C:\Users\thoms\OneDrive - polymtl.ca\Université\2024 Hiver\INF2705-Infographie\INF2705-TPs\tp2_H24\src\Debug\00_tp1_intro.exe

@@ -45,10 +45,9 @@ class BasicShapeElements
 {
 public:
     BasicShapeElements();
-    void setData(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize);
-    BasicShapeElements(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize);
     ~BasicShapeElements();
 
+    void setData(const GLfloat* data, GLsizeiptr byteSize, const GLuint* indexes, GLsizeiptr indexesByteSize);
     void enableAttribute(GLuint index, GLint size, GLsizei stride, GLsizeiptr offset);
     void draw(GLenum mode, GLsizei count);
 

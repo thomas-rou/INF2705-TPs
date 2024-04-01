@@ -1,11 +1,14 @@
 #version 330 core
 
-layout (location = 0) in vec3 position;
+layout (location = 0) in vec3 inPosition;
+layout (location = 1) in vec2 inTexture;
+
 uniform mat4 mvp;
-out vec3 color;
+
+out vec2 vTexture;
 
 void main()
 {
-    gl_Position = mvp * vec4(position, 1.0);
-    color = vec3(0.5, 0.8, 0.2);
+    gl_Position = mvp * vec4(inPosition, 1.0);
+    vTexture = inTexture.st;
 }

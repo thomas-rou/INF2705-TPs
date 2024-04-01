@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>tp2</ProjectName>
+    <ProjectName>00_tp1_intro</ProjectName>
     <ProjectGuid>{21C099B6-346C-4911-BDE2-DA5D7915C146}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>.</RootNamespace>
@@ -28,26 +28,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -152,28 +152,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tp2_H24\src\textures.cpp" />
-    <ClCompile Include="..\..\tp2_H24\src\utils.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="shader_program.cpp" />
     <ClCompile Include="shapes.cpp" />
+    <ClCompile Include="textures.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\tp2_H24\src\model.h" />
-    <ClInclude Include="..\..\tp2_H24\src\obj_loader.h" />
-    <ClInclude Include="..\..\tp2_H24\src\textures.h" />
-    <ClInclude Include="..\..\tp2_H24\src\utils.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="model.h" />
+    <ClInclude Include="obj_loader.h" />
     <ClInclude Include="shader_program.h" />
     <ClInclude Include="shapes.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="textures.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="vertices_data.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="shaders\model.fs.glsl" />
+    <None Include="shaders\model.vs.glsl" />
+    <None Include="shaders\skybox.fs.glsl" />
+    <None Include="shaders\skybox.vs.glsl" />
+    <None Include="shaders\water.fs.glsl" />
+    <None Include="shaders\water.vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
