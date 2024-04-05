@@ -14,6 +14,7 @@ public:
 private:
     const glm::vec3& m_position;
     const glm::vec2& m_orientation;
+
 };
 
 

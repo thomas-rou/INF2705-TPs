@@ -1,2 +1,0 @@
-C:/Users/thoms/OneDrive - polymtl.ca/Université/2024 Hiver/INF2705-Infographie/Tps/TP1/tp1_H24/src/packages/glm.0.9.9.800/build/native/include/glm/out/build/x64-Debug/CMakeFiles/edit_cache.dir
-C:/Users/thoms/OneDrive - polymtl.ca/Université/2024 Hiver/INF2705-Infographie/Tps/TP1/tp1_H24/src/packages/glm.0.9.9.800/build/native/include/glm/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
