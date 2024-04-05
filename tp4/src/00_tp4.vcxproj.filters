@@ -32,8 +32,7 @@
     </ClCompile>
     <ClCompile Include="uniform_buffer.cpp" />
     <ClCompile Include="resources.cpp" />
-    <ClCompile Include="scenes.tp3.cpp" />
-    <ClCompile Include="scenes.tp4.cpp" />
+    <ClCompile Include="scenes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
