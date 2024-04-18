@@ -56,7 +56,31 @@ const vec3 DARK_RED_COLOR = vec3(0.1, 0.0, 0.0);
 
 const vec3 ACCELERATION = vec3(0.0f, 0.1f, 0.0f);
 
-void main()
-{
-    // TODO   
+void main() {
+    timeToLiveMod = timeToLive - dt;
+
+    if (timeToLiveMod < 0.0f) {
+        positionMod = randomInCircle(INITIAL_RADIUS, INITIAL_HEIGHT);
+        vec3 vel = normalize(randomInCircle(FINAL_RADIUS, FINAL_HEIGHT));
+        float f = INITIAL_SPEED_MIN + (INITIAL_SPEED_MAX - INITIAL_SPEED_MIN) * random();
+        velocityMod = vel * f;
+        colorMod = vec4(YELLOW_COLOR, INITIAL_ALPHA);
+        sizeMod = PARTICLE_SIZE;
+        timeToLiveMod = mix(random(), 1.0, INITIAL_TIME_TO_LIVE_RATIO);
+        timeToLiveMod *= MAX_TIME_TO_LIVE;
+    } else {
+        positionMod = position + velocity * dt;
+        velocityMod = velocity + ACCELERATION * dt;
+        float timeNormalised = 1 - timeToLiveMod / MAX_TIME_TO_LIVE;
+        if (timeNormalised < 0.5) {
+            float f = smoothstep(0.25f, 0.3f, timeNormalised);
+            colorMod.rgb = mix(YELLOW_COLOR, ORANGE_COLOR, f);
+        } else {
+            float f = smoothstep(0.5, 1.0f, timeNormalised);
+            colorMod.rgb = mix(ORANGE_COLOR, DARK_RED_COLOR, f);
+        }
+        colorMod.a = ALPHA * smoothstep(0.0f, 0.2f, timeNormalised) * (1 - smoothstep(0.8f, 1.0f, timeNormalised));
+        sizeMod = PARTICLE_SIZE;
+        sizeMod *= 1 + 0.5 * smoothstep(0.5f, 1.0f, timeNormalised);
+    }
 }
