@@ -11,7 +11,9 @@ in ATTRIB_GS_OUT
     vec2 texCoords;
 } attribIn;
 
-void main()
-{
-    // TODO
+void main() {
+    FragColor = attribIn.color;
+    vec4 texel = texture(textureSampler, attribIn.texCoords);
+    FragColor.a = mix(texel.a, attribIn.color.a, 0.5);
+    if (FragColor.a <= 0.05) discard;
 }

@@ -18,7 +18,23 @@ out ATTRIB_GS_OUT
 
 uniform mat4 projection;
 
-void main()
-{
-    // TODO
+void main() {
+    vec2 offsets[4] = {
+        vec2(-0.5, -0.5),
+        vec2( 0.5, -0.5),
+        vec2(-0.5,  0.5),
+        vec2( 0.5,  0.5)
+    };
+
+    for (int i = 0; i < 4; i++) {
+        setAttributes(offsets[i]);
+        EmitVertex();
+    }
+    EndPrimitive();
+}
+
+void setAttributes(vec2 offset) {
+    gl_Position = projection * (gl_in[0].gl_Position + vec4(offset * attribIn[0].size, 0.0, 0.0));
+    attribOut.color = attribIn[0].color;
+    attribOut.texCoords = offset + 0.5;
 }

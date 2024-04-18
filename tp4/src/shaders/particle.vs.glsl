@@ -14,7 +14,8 @@ out ATTRIB_VS_OUT
     vec2 size;
 } attribOut;
 
-void main()
-{
-    // TODO
+void main() {
+    gl_Position = modelView * vec4(position, 1.0);
+    attribOut.color = color;
+    attribOut.size = size;
 }
