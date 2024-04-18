@@ -143,6 +143,15 @@ Resources::Resources()
 
 		// TODO
 
+        const GLchar* vars[] ={
+			"positionMod",
+			"velocityMod",
+			"colorMod",
+			"sizeMod",
+			"timeToLiveMod"
+		};
+		transformFeedback.setTransformFeedbackVaryings(vars, sizeof(vars) / sizeof(vars[0]), GL_INTERLEAVED_ATTRIBS);
+
         transformFeedback.link();
 
         timeLocationTransformFeedback = transformFeedback.getUniformLoc("time");

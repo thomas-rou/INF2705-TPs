@@ -68,7 +68,7 @@ void TesselationScene::render(glm::mat4& view, glm::mat4& projPersp)
     glUniform1i(m_res.viewWireframeLocationTessellation, m_viewWireframe);
 
     // TODO: To remove, only for debug
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//GL_FILL
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//GL_FILL
 
     // TODO
     m_res.tesselationPlane.draw(GL_PATCHES, m_res.tesselationPlaneCount);
