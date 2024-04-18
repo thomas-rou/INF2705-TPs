@@ -67,10 +67,10 @@ void TesselationScene::render(glm::mat4& view, glm::mat4& projPersp)
 
     glUniform1i(m_res.viewWireframeLocationTessellation, m_viewWireframe);
 
-	// TODO: To remove, only for debug
+    // TODO: To remove, only for debug
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//GL_FILL
-	
-	// TODO
+
+    // TODO
     m_res.tesselationPlane.draw(GL_PATCHES, m_res.tesselationPlaneCount);
 
     mvp = projPersp * glm::mat4(glm::mat3(view));
@@ -101,11 +101,41 @@ ParticleScene::ParticleScene(Resources& resources, Window& w)
     glEnable(GL_PROGRAM_POINT_SIZE);
     
     // TODO
+    glGenVertexArrays(1, &m_vao);
+    glBindVertexArray(m_vao);
+
+    glGenBuffers(2, m_vbo);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
+    glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), particles, GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[1]);
+    glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), nullptr, GL_DYNAMIC_COPY);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, position));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, velocity));
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, color));
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, size));
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(3);
+
+    glGenTransformFeedbacks(1, &m_tfo);
+    glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_tfo);
+    glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_vbo[1]);
+
+    glBindVertexArray(0);
 }
 
 ParticleScene::~ParticleScene()
 {
     // TODO
+    glUseProgram(0);
+    glDeleteVertexArrays(1, &m_vao);
+    glDeleteBuffers(2, m_vbo);
+    glDeleteBuffers(1, &m_tfo);
 }
 
 void ParticleScene::render(glm::mat4& view, glm::mat4& projPersp)
@@ -128,9 +158,21 @@ void ParticleScene::render(glm::mat4& view, glm::mat4& projPersp)
     glUniform1f(m_res.timeLocationTransformFeedback, time);
     glUniform1f(m_res.dtLocationTransformFeedback, dt);
 
+    glBindVertexArray(m_vao);
+    glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_vbo[1]);
+
     // TODO: update particles
 
+    glEnable(GL_RASTERIZER_DISCARD);
+    glBeginTransformFeedback(GL_POINTS);
+    glDrawArrays(GL_POINTS, 0, m_nParticles);
+    glEndTransformFeedback();
+    glDisable(GL_RASTERIZER_DISCARD);
+
     // TODO: swap buffers
+
+    glBindVertexArray(0);
+    std::swap(m_vbo[0], m_vbo[1]);
 
     // Draw skybox first without the function to change some parameter on the depth test.
     glDepthFunc(GL_LEQUAL);
@@ -153,7 +195,20 @@ void ParticleScene::render(glm::mat4& view, glm::mat4& projPersp)
     glUniformMatrix4fv(m_res.modelViewLocationParticle, 1, GL_FALSE, &modelView[0][0]);
     glUniformMatrix4fv(m_res.projectionLocationParticle, 1, GL_FALSE, &projPersp[0][0]);
 
+    glBindVertexArray(m_vao);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
+
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     // TODO: Draw particles without depth write and with blending
+
+    glDrawArrays(GL_POINTS, 0, m_nParticles);
+    glBindVertexArray(0);
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+
 
     if (m_cumulativeTime > 1.0f / 60.0f)
     {
