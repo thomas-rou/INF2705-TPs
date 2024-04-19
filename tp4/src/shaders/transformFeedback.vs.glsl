@@ -61,26 +61,25 @@ void main() {
 
     if (timeToLiveMod < 0.0f) {
         positionMod = randomInCircle(INITIAL_RADIUS, INITIAL_HEIGHT);
-        vec3 vel = normalize(randomInCircle(FINAL_RADIUS, FINAL_HEIGHT));
-        float f = INITIAL_SPEED_MIN + (INITIAL_SPEED_MAX - INITIAL_SPEED_MIN) * random();
-        velocityMod = vel * f;
+        vec3 velocityDir = normalize(randomInCircle(FINAL_RADIUS, FINAL_HEIGHT));
+        float initialSpeed = INITIAL_SPEED_MIN + (INITIAL_SPEED_MAX - INITIAL_SPEED_MIN) * random();
+        velocityMod = velocityDir * initialSpeed;
+        timeToLiveMod = mix(random(), 1.0, INITIAL_TIME_TO_LIVE_RATIO) * MAX_TIME_TO_LIVE;
         colorMod = vec4(YELLOW_COLOR, INITIAL_ALPHA);
-        sizeMod = PARTICLE_SIZE;
-        timeToLiveMod = mix(random(), 1.0, INITIAL_TIME_TO_LIVE_RATIO);
-        timeToLiveMod *= MAX_TIME_TO_LIVE;
+        sizeMod = vec2(0.5, 1.0);
     } else {
         positionMod = position + velocity * dt;
         velocityMod = velocity + ACCELERATION * dt;
-        float timeNormalised = 1 - timeToLiveMod / MAX_TIME_TO_LIVE;
-        if (timeNormalised < 0.5) {
-            float f = smoothstep(0.25f, 0.3f, timeNormalised);
-            colorMod.rgb = mix(YELLOW_COLOR, ORANGE_COLOR, f);
+        float normalLiveTime = 1 - timeToLiveMod / MAX_TIME_TO_LIVE;
+        if (normalLiveTime < 0.5) {
+            float mixFactor = smoothstep(0.25f, 0.3f, normalLiveTime);
+            colorMod.rgb = mix(YELLOW_COLOR, ORANGE_COLOR, mixFactor);
         } else {
-            float f = smoothstep(0.5, 1.0f, timeNormalised);
-            colorMod.rgb = mix(ORANGE_COLOR, DARK_RED_COLOR, f);
+            float mixFactor = smoothstep(0.5f, 1.0f, normalLiveTime);
+            colorMod.rgb = mix(ORANGE_COLOR, DARK_RED_COLOR, mixFactor);
         }
-        colorMod.a = ALPHA * smoothstep(0.0f, 0.2f, timeNormalised) * (1 - smoothstep(0.8f, 1.0f, timeNormalised));
-        sizeMod = PARTICLE_SIZE;
-        sizeMod *= 1 + 0.5 * smoothstep(0.5f, 1.0f, timeNormalised);
+        colorMod.a = ALPHA * smoothstep(0.0f, 0.2f, normalLiveTime) * (1 - smoothstep(0.8f, 1.0f, normalLiveTime));
+        sizeMod = vec2(0.5, 1.0);
+        sizeMod *= 1 + 0.5 * smoothstep(0.5f, 1.0f, normalLiveTime);
     }
 }
