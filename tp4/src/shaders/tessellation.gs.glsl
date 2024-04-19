@@ -19,25 +19,26 @@ out ATTRIB_GS_OUT
     vec3 barycentricCoords;
 } attribOut;
 
+void setVertexAttributes(int index, vec3 vertexBarycentricCoords) {
+    gl_Position = gl_in[index].gl_Position;
+    attribOut.height = attribIn[index].height;
+    attribOut.texCoords = attribIn[index].texCoords;
+    attribOut.patchDistance = attribIn[index].patchDistance;
+    attribOut.barycentricCoords = vertexBarycentricCoords;
+}
+
 void main() {
-    const vec3 bary[3] = {
+    // Define a barycentric coordinate array for each vertex of the triangle
+    const vec3 vertexBarycentricCoords[3] = {
         vec3(1.0f, 0.0f, 0.0f),
         vec3(0.0f, 1.0f, 0.0f),
         vec3(0.0f, 0.0f, 1.0f)
     };
 
-    int length = gl_in.length();
-    for (int i = 0; i < length; ++i) {
-        setAttributes(i, bary[i]);
+    // Emit each vertex with corresponding barycentric coordinates
+    for (int i = 0; i < gl_in.length(); ++i) {
+        setVertexAttributes(i, vertexBarycentricCoords[i]);
         EmitVertex();
     }
     EndPrimitive();
-}
-
-void setAttributes(int i, vec3 bary) {
-    gl_Position = gl_in[i].gl_Position;
-    attribOut.height = attribIn[i].height;
-    attribOut.texCoords = attribIn[i].texCoords;
-    attribOut.patchDistance = attribIn[i].patchDistance;
-    attribOut.barycentricCoords = bary;
 }
