@@ -202,6 +202,7 @@ void ParticleScene::render(glm::mat4& view, glm::mat4& projPersp)
     glDepthFunc(GL_LESS);
 
 
+    m_res.particule.link();
     m_res.particule.use();
     m_res.flameTexture.use();
 
