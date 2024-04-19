@@ -11,7 +11,7 @@ in ATTRIB_OUT
 
 out ATTRIB_VS_OUT
 {
-    vec2 texCoords;    
+    vec2 texCoords;
     vec3 emission;
     vec3 ambient;
     vec3 diffuse;
