@@ -14,6 +14,6 @@ in ATTRIB_GS_OUT
 void main() {
     FragColor = attribIn.color;
     vec4 texel = texture(textureSampler, attribIn.texCoords);
-    FragColor = mix(texel, attribIn.color, 0.5);
+    FragColor.a = mix(texel.a, attribIn.color.a, 0.5); // after testing I find that only mixing alpha leads to a better looking effect
     if (FragColor.a <= 0.05) discard;
 }
