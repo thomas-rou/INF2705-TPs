@@ -52,5 +52,5 @@ clean :
 # pour créer le fichier à remettre dans Moodle
 remise zip :
 	make clean
-	rm -f INF2705_remise_tp1.zip
-	zip -r INF2705_remise_tp1.zip *.cpp *.h *.glsl makefile *.txt
+	rm -f INF2705_remise_tp4.zip
+	zip -r INF2705_remise_tp4.zip *.cpp *.h *.glsl makefile *.txt
