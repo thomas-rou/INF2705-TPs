@@ -101,33 +101,28 @@ ParticleScene::ParticleScene(Resources& resources, Window& w)
     glEnable(GL_PROGRAM_POINT_SIZE);
     
     // TODO
-glEnable(GL_PROGRAM_POINT_SIZE);
-    
-
+    // create VAO, VBOs and TFO
     glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
     glGenBuffers(2, m_vbo);
     glGenTransformFeedbacks(1, &m_tfo);
-    auto numBytes = MAX_N_PARTICULES * sizeof(Particle);
 
+    // Pass particles data to input VBO
+    auto numBytes = MAX_N_PARTICULES * sizeof(Particle);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
     glBufferData(GL_ARRAY_BUFFER, numBytes, particles, GL_DYNAMIC_COPY);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(10 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(12 * sizeof(GLfloat)));
-
+    // Configure output VBO with the same size (no data needed since it's filled with results)
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo[1]);
     glBufferData(GL_ARRAY_BUFFER, numBytes, nullptr, GL_DYNAMIC_COPY);
 
+    // link TFO to VAO
+    glBindVertexArray(m_vao);
+    glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_tfo);
 
+    // Load particule VBO
+    m_res.particule.use();
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
@@ -139,9 +134,25 @@ glEnable(GL_PROGRAM_POINT_SIZE);
     glEnableVertexAttribArray(4);
     glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(12 * sizeof(GLfloat)));
     
-    glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_tfo);
+    // Load Modified Value VBO
+    m_res.transformFeedback.use();
 
-    m_res = resources;
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(particles), particles, GL_STREAM_READ);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(10 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(12 * sizeof(GLfloat)));
+
+    // Remove all links
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 ParticleScene::~ParticleScene()
@@ -169,25 +180,27 @@ void ParticleScene::render(glm::mat4& view, glm::mat4& projPersp)
     m_res.transformFeedback.use();
     
     // TODO: buffer binding
-
     glUniform1f(m_res.timeLocationTransformFeedback, time);
     glUniform1f(m_res.dtLocationTransformFeedback, dt);
 
     glBindVertexArray(m_vao);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
     glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_vbo[1]);
 
     // TODO: update particles
-
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
+    // Redo attributs configuration since binding a different VBO
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(10 * sizeof(GLfloat)));
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(12 * sizeof(GLfloat)));
     glBeginTransformFeedback(GL_POINTS);
     glEnable(GL_RASTERIZER_DISCARD);
-    glDrawArrays(GL_POINTS,0, MAX_N_PARTICULES);
+    glDrawArrays(GL_POINTS, 0, m_nParticles);
     glDisable(GL_RASTERIZER_DISCARD);
     glEndTransformFeedback();
 
     // TODO: swap buffers
-
-    // glBindVertexArray(0);
     std::swap(m_vbo[0], m_vbo[1]);
 
     // Draw skybox first without the function to change some parameter on the depth test.
@@ -202,25 +215,30 @@ void ParticleScene::render(glm::mat4& view, glm::mat4& projPersp)
     glDepthFunc(GL_LESS);
 
 
-    m_res.particule.link();
     m_res.particule.use();
     m_res.flameTexture.use();
 
     // TODO: buffer binding
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
     modelView = view;
     glUniformMatrix4fv(m_res.modelViewLocationParticle, 1, GL_FALSE, &modelView[0][0]);
     glUniformMatrix4fv(m_res.projectionLocationParticle, 1, GL_FALSE, &projPersp[0][0]);
 
-    // TODO: Draw particles without depth write and with blending
+    glBindVertexArray(m_vao);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(10 * sizeof(GLfloat)));
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, 13 * sizeof(GLfloat), (GLvoid*)(12 * sizeof(GLfloat)));
 
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_FALSE);
-    m_res.particule.use();
-    glDrawArrays(GL_POINTS, 0, MAX_N_PARTICULES);
-    glDepthMask(GL_TRUE);
-    glDepthFunc(GL_LESS);
+    // TODO: Draw particles without depth write and with blending
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDrawArrays(GL_POINTS, 0, m_nParticles);
+    glBindVertexArray(0);
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
 
 
     if (m_cumulativeTime > 1.0f / 60.0f)
